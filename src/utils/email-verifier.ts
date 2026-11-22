@@ -192,8 +192,8 @@ export async function verifyEmail(email: string): Promise<EmailVerificationResul
   try {
     const mx = await dns.resolveMx(domain);
     const host = mx.sort((a, b) => a.priority - b.priority)[0]?.exchange;
-    if (host) {
-      const smtp = await smtpProbe(host, normalized, 5_000);
+    if (host && process.env.SMTP_VERIFY !== "false") {
+      const smtp = await smtpProbe(host, normalized, 2_500);
       if (smtp === 'rejected') {
         return { email: normalized, valid: false, reason: 'smtp_rejected' };
       }

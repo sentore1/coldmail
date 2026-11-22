@@ -50,8 +50,8 @@ const STAGE_BADGE: Record<
 > = {
   scraped: { label: "Scraped", className: "bg-slate-100 text-slate-700 border-slate-200" },
   verified: { label: "Verified", className: "bg-cyan-50 text-cyan-700 border-cyan-200" },
-  enriched: { label: "Enriched", className: "bg-blue-50 text-blue-700 border-blue-200" },
-  researched: { label: "Researched", className: "bg-blue-50 text-blue-700 border-blue-200" },
+  enriched: { label: "Enriched", className: "bg-[#e6f4ff] text-[#0070d6] border-[#99ceff]" },
+  researched: { label: "Researched", className: "bg-[#e6f4ff] text-[#0070d6] border-[#99ceff]" },
   email_drafted: { label: "Drafted", className: "bg-violet-50 text-violet-700 border-violet-200" },
   approval_pending: { label: "Review", className: "bg-amber-50 text-amber-800 border-amber-200" },
   approved: { label: "Approved", className: "bg-green-50 text-green-700 border-green-200" },
@@ -463,8 +463,8 @@ export default function PipelineModule({
       .order("pipeline_updated_at", { ascending: false, nullsFirst: false });
 
     if (leadError) {
-      console.error("Pipeline fetch leads:", leadError);
-      toast.error("Failed to load pipeline leads");
+      console.error("Pipeline fetch leads:", leadError.code, leadError.message, leadError.details, leadError.hint);
+      toast.error(`Failed to load pipeline leads: ${leadError.message ?? "unknown error"}`);
     }
 
     const { data: emailData } = await supabase
@@ -696,7 +696,7 @@ export default function PipelineModule({
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 size={20} className="animate-spin text-blue-600" />
+        <Loader2 size={20} className="animate-spin text-[#0084FF]" />
       </div>
     );
   }
@@ -765,7 +765,7 @@ export default function PipelineModule({
             type="button"
             disabled={approvalBusy}
             onClick={scoreSelectedLeads}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0084FF] text-white hover:bg-[#0070d6] disabled:opacity-50"
           >
             {approvalBusy ? (
               <Loader2 size={12} className="animate-spin" />
@@ -853,7 +853,7 @@ export default function PipelineModule({
 
                     <div
                       className="flex flex-col gap-2 flex-1 rounded-lg p-2 bg-gray-100 border-2 border-dashed border-transparent overflow-y-auto"
-                      style={{ minHeight: "8rem", maxHeight: "calc(100vh - 240px)" }}
+                      style={{ minHeight: "8rem", maxHeight: "calc(100vh - 240px)", backgroundImage: "radial-gradient(circle, #d1d5db 1px, transparent 1px)", backgroundSize: "16px 16px" }}
                     >
                       {columnLeads.map((lead) => {
                         const stage = normalizePipelineStage(lead.pipeline_stage);
@@ -925,7 +925,7 @@ export default function PipelineModule({
                   {drawerLead.pipeline_stage ?? "scraped"}
                 </span>
                 {drawerLead.niche && (
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#e6f4ff] text-[#0070d6] border border-[#99ceff]">
                     {drawerLead.niche}
                   </span>
                 )}
@@ -973,7 +973,7 @@ export default function PipelineModule({
                   <p className="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-1.5">
                     Agent decision
                   </p>
-                  <div className="text-xs text-gray-700 leading-relaxed bg-blue-50 border border-blue-200 rounded-lg p-3 space-y-1">
+                  <div className="text-xs text-gray-700 leading-relaxed bg-[#e6f4ff] border border-[#99ceff] rounded-lg p-3 space-y-1">
                     <p>
                       <span className="font-semibold">Action:</span>{" "}
                       {drawerLead.agent_recommended_action ?? "review"} ·{" "}
@@ -985,7 +985,7 @@ export default function PipelineModule({
                     {drawerLead.agent_email_angle && (
                       <p>{drawerLead.agent_email_angle}</p>
                     )}
-                    <p className="text-[10px] text-blue-700">
+                    <p className="text-[10px] text-[#0070d6]">
                       Draft {drawerLead.agent_draft_allowed ? "allowed" : "blocked"} · Auto-send{" "}
                       {drawerLead.agent_auto_send_allowed ? "allowed" : "blocked"}
                     </p>
@@ -1178,7 +1178,7 @@ export default function PipelineModule({
                 <button
                   disabled={busyLeadId === drawerLead.id}
                   onClick={() => runAction(drawerLead.id, "research")}
-                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="flex-1 min-w-[120px] flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold bg-[#0084FF] text-white hover:bg-[#0070d6] disabled:opacity-50"
                 >
                   {busyLeadId === drawerLead.id && busyAction === "research" ? (
                     <Loader2 size={14} className="animate-spin" />
@@ -1394,9 +1394,9 @@ function PipelineCard({
   return (
     <div
       onClick={onOpen}
-      className={`rounded-lg p-3 cursor-pointer border bg-white hover:border-blue-400 hover:shadow-sm transition-all group ${
+      className={`rounded-lg p-3 cursor-pointer border bg-white hover:border-[#0084FF] hover:shadow-sm transition-all group ${
         selected
-          ? "border-blue-500 ring-1 ring-blue-200 bg-blue-50/50"
+          ? "border-[#0084FF] ring-1 ring-[#99ceff] bg-[#e6f4ff]/50"
           : failed
             ? "border-red-200"
             : "border-gray-200"
@@ -1409,11 +1409,11 @@ function PipelineCard({
             e.stopPropagation();
             onToggleSelect();
           }}
-          className="flex-shrink-0 p-0.5 rounded text-gray-400 hover:text-blue-600"
+          className="flex-shrink-0 p-0.5 rounded text-gray-400 hover:text-[#0084FF]"
           aria-label={selected ? "Deselect lead" : "Select lead"}
         >
           {selected ? (
-            <CheckSquare size={14} className="text-blue-600" />
+            <CheckSquare size={14} className="text-[#0084FF]" />
           ) : (
             <Square size={14} />
           )}
@@ -1565,7 +1565,7 @@ function ActionBtn({
   variant?: "blue" | "violet" | "green" | "outline";
 }) {
   const colors = {
-    blue: "bg-blue-600 hover:bg-blue-700 text-white",
+    blue: "bg-[#0084FF] hover:bg-[#0070d6] text-white",
     violet: "bg-violet-600 hover:bg-violet-700 text-white",
     green: "bg-green-600 hover:bg-green-700 text-white",
     outline:

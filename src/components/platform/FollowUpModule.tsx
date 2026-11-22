@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { Lead, EmailReply, AIReply, SentEmail } from "@/types/platform";
@@ -195,7 +195,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
       const aiReply = aiReplies.find((r) => r.id === aiReplyId);
       if (!aiReply) { toast.error("AI reply not found"); return; }
       
-      // Get recipient email — from lead if linked, otherwise from the original reply
+      // Get recipient email � from lead if linked, otherwise from the original reply
       const lead = aiReply.lead_id ? leads.get(aiReply.lead_id) : undefined;
       const originalReply = emailReplies.find((r) => r.id === aiReply.reply_id);
       const recipientEmail = lead?.email || originalReply?.from_email;
@@ -269,7 +269,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 size={24} className="animate-spin text-blue-600" />
+        <Loader2 size={24} className="animate-spin text-[#0084FF]" />
       </div>
     );
   }
@@ -286,7 +286,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
           <button
             onClick={checkReplies}
             disabled={checkingReplies}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#0084FF] text-white rounded-lg text-sm font-medium hover:bg-[#0070d6] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {checkingReplies ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
             Check Inbox
@@ -297,7 +297,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
         <div className="grid grid-cols-6 gap-3">
           {[
             { label: "Total", value: stats.totalAll, icon: Send, color: "text-gray-900" },
-            { label: "Sent", value: stats.totalSent, icon: Send, color: "text-blue-600" },
+            { label: "Sent", value: stats.totalSent, icon: Send, color: "text-[#0084FF]" },
             { label: "Failed", value: stats.totalFailed, icon: Mail, color: stats.totalFailed > 0 ? "text-red-500" : "text-gray-400" },
             { label: "Replies", value: stats.replied, icon: MessageSquare, color: "text-gray-900" },
             { label: "Positive", value: stats.positiveReplies, icon: ThumbsUp, color: "text-green-600" },
@@ -339,7 +339,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-8 py-6">
+      <div className="flex-1 overflow-y-auto px-8 py-6" style={{ backgroundImage: "radial-gradient(circle, #d1d5db 1px, transparent 1px)", backgroundSize: "20px 20px" }}>
 
         {/* Sent Emails */}
         {activeTab === "sent" && (
@@ -374,7 +374,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
                           isOpened                    ? "bg-yellow-50 text-yellow-700" :
                           isClicked                   ? "bg-purple-50 text-purple-700" :
                           isFailed                    ? "bg-red-50 text-red-700" :
-                          "bg-blue-50 text-blue-700"
+                          "bg-[#e6f4ff] text-[#0070d6]"
                         }`}>
                           {isOpened && !['replied','clicked'].includes(email.status ?? '') ? 'OPENED' :
                            isClicked ? 'CLICKED' :
@@ -384,22 +384,22 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
                       <p className="text-sm text-gray-700 mb-1 font-medium">{email.subject}</p>
                       <p className="text-xs text-gray-500">
                         {displayEmail
-                          ? <>{displayEmail} • </>
-                          : <span className="text-orange-500">⚠ No recipient email — lead had no email address • </span>
+                          ? <>{displayEmail} � </>
+                          : <span className="text-orange-500">? No recipient email � lead had no email address � </span>
                         }
                         {new Date(email.sent_at).toLocaleDateString()} at {new Date(email.sent_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                       {isFailed && email.bounce_reason && (
-                        <p className="text-xs text-red-600 mt-1">⚠ {email.bounce_reason}</p>
+                        <p className="text-xs text-red-600 mt-1">? {email.bounce_reason}</p>
                       )}
                       {isOpened && email.opened_at && (
                         <p className="text-xs text-yellow-600 mt-1">
-                          👁 Opened {new Date(email.opened_at).toLocaleDateString()} at {new Date(email.opened_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          ?? Opened {new Date(email.opened_at).toLocaleDateString()} at {new Date(email.opened_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                       )}
                       {isClicked && email.clicked_at && (
                         <p className="text-xs text-purple-600 mt-1">
-                          🖱 Clicked {new Date(email.clicked_at).toLocaleDateString()} at {new Date(email.clicked_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                          ?? Clicked {new Date(email.clicked_at).toLocaleDateString()} at {new Date(email.clicked_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                       )}
                     </div>
@@ -439,14 +439,14 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
                           </span>
                         )}
                         {hasAI && (
-                          <span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs font-medium rounded flex items-center gap-1">
+                          <span className="px-2 py-0.5 bg-[#e6f4ff] text-[#0070d6] text-xs font-medium rounded flex items-center gap-1">
                             <Bot size={12} />AI Ready
                           </span>
                         )}
                       </div>
                       <p className="text-sm text-gray-700 font-medium mb-1">{reply.subject}</p>
                       <p className="text-xs text-gray-500 mb-3">
-                        From {reply.from_email} • {new Date(reply.received_at).toLocaleDateString()} at {new Date(reply.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        From {reply.from_email} � {new Date(reply.received_at).toLocaleDateString()} at {new Date(reply.received_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
                   </div>
@@ -457,7 +457,7 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
                     <button
                       onClick={() => generateAIResponse(reply)}
                       disabled={generating === reply.id}
-                      className="w-full py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="w-full py-2.5 bg-[#0084FF] text-white rounded-lg text-sm font-medium hover:bg-[#0070d6] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {generating === reply.id ? (
                         <>
@@ -512,10 +512,10 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
                     </div>
                   )}
                   
-                  <div className="bg-blue-50 rounded-lg p-4 mb-3 border-l-2 border-blue-500">
+                  <div className="bg-[#e6f4ff] rounded-lg p-4 mb-3 border-l-2 border-[#0084FF]">
                     <div className="flex items-center gap-1 mb-2">
-                      <Bot size={14} className="text-blue-600" />
-                      <p className="text-xs font-medium text-blue-600">AI GENERATED RESPONSE</p>
+                      <Bot size={14} className="text-[#0084FF]" />
+                      <p className="text-xs font-medium text-[#0084FF]">AI GENERATED RESPONSE</p>
                     </div>
                     <p className="text-sm font-medium text-gray-900 mb-2">{aiReply.subject}</p>
                     <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{aiReply.body}</p>
@@ -563,8 +563,8 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
           <div className="relative bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Sparkles className="text-blue-600" size={16} />
+                <div className="w-8 h-8 bg-[#cce9ff] rounded-lg flex items-center justify-center">
+                  <Sparkles className="text-[#0084FF]" size={16} />
                 </div>
                 <h2 className="text-lg font-semibold text-gray-900">AI Generated Response</h2>
               </div>
@@ -581,10 +581,10 @@ export default function FollowUpModule({ userId }: FollowUpModuleProps) {
               <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{selectedReply.body}</p>
             </div>
             
-            <div className="bg-blue-50 rounded-lg p-4 mb-5 border-l-2 border-blue-500">
+            <div className="bg-[#e6f4ff] rounded-lg p-4 mb-5 border-l-2 border-[#0084FF]">
               <div className="flex items-center gap-1 mb-3">
-                <Bot size={14} className="text-blue-600" />
-                <p className="text-xs font-medium text-blue-600">AI RESPONSE</p>
+                <Bot size={14} className="text-[#0084FF]" />
+                <p className="text-xs font-medium text-[#0084FF]">AI RESPONSE</p>
               </div>
               <p className="text-sm font-medium text-gray-900 mb-3">{aiDraft.subject}</p>
               <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{aiDraft.body}</p>

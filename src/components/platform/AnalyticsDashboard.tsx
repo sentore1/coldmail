@@ -119,7 +119,7 @@ export default function AnalyticsDashboard({ userId }: AnalyticsDashboardProps) 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 size={24} className="animate-spin text-blue-600" />
+        <Loader2 size={24} className="animate-spin text-[#0084FF]" />
       </div>
     );
   }
@@ -136,7 +136,7 @@ export default function AnalyticsDashboard({ userId }: AnalyticsDashboardProps) 
           <select
             value={days}
             onChange={e => setDays(Number(e.target.value))}
-            className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0084FF]"
           >
             <option value={7}>Last 7 days</option>
             <option value={14}>Last 14 days</option>
@@ -184,7 +184,7 @@ export default function AnalyticsDashboard({ userId }: AnalyticsDashboardProps) 
         {/* Daily Activity Chart */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
-            <Activity size={15} className="text-blue-600" />
+            <Activity size={15} className="text-[#0084FF]" />
             <h3 className="text-sm font-semibold text-gray-900">Daily Activity</h3>
           </div>
           {daily.length > 0 ? (
@@ -217,7 +217,7 @@ export default function AnalyticsDashboard({ userId }: AnalyticsDashboardProps) 
         {/* Lead Status Pie */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
-            <Users size={15} className="text-blue-600" />
+            <Users size={15} className="text-[#0084FF]" />
             <h3 className="text-sm font-semibold text-gray-900">Lead Status</h3>
           </div>
           {pieData.length > 0 ? (
@@ -258,7 +258,7 @@ export default function AnalyticsDashboard({ userId }: AnalyticsDashboardProps) 
         {/* SMTP Accounts */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
-            <Zap size={15} className="text-blue-600" />
+            <Zap size={15} className="text-[#0084FF]" />
             <h3 className="text-sm font-semibold text-gray-900">SMTP Performance</h3>
           </div>
           {smtpAccounts.length > 0 ? (
@@ -324,7 +324,7 @@ export default function AnalyticsDashboard({ userId }: AnalyticsDashboardProps) 
         {/* Campaign Performance */}
         <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
-            <TrendingUp size={15} className="text-blue-600" />
+            <TrendingUp size={15} className="text-[#0084FF]" />
             <h3 className="text-sm font-semibold text-gray-900">Campaign Performance</h3>
           </div>
           {campaigns.length > 0 ? (

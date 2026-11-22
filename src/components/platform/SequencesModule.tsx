@@ -193,7 +193,7 @@ export default function SequencesModule({ userId }: SequencesModuleProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 size={32} className="animate-spin text-blue-600" />
+        <Loader2 size={32} className="animate-spin text-[#0084FF]" />
       </div>
     );
   }
@@ -277,12 +277,12 @@ export default function SequencesModule({ userId }: SequencesModuleProps) {
               <h3 className="text-sm font-semibold text-gray-700 mb-4">Sequence Flow</h3>
               <div className="flex items-center gap-4 overflow-x-auto pb-4">
                 {/* Initial Email */}
-                <div className="flex-shrink-0 bg-blue-50 border-2 border-blue-200 rounded-lg p-4 min-w-[200px]">
+                <div className="flex-shrink-0 bg-[#e6f4ff] border-2 border-[#99ceff] rounded-lg p-4 min-w-[200px]">
                   <div className="flex items-center gap-2 mb-2">
-                    <Mail size={16} className="text-blue-600" />
-                    <span className="text-sm font-semibold text-blue-900">Initial Email</span>
+                    <Mail size={16} className="text-[#0084FF]" />
+                    <span className="text-sm font-semibold text-[#003d80]">Initial Email</span>
                   </div>
-                  <p className="text-xs text-blue-700">Campaign start</p>
+                  <p className="text-xs text-[#0070d6]">Campaign start</p>
                 </div>
 
                 {sequences.map((seq, index) => (
@@ -361,7 +361,7 @@ export default function SequencesModule({ userId }: SequencesModuleProps) {
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
+                        <span className="text-xs px-2 py-1 rounded-full bg-[#e6f4ff] text-[#0084FF] border border-[#cce9ff]">
                           {sequence.tone}
                         </span>
                       </div>

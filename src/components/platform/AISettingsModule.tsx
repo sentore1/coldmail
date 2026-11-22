@@ -348,24 +348,24 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
     <div className="p-6 flex flex-col gap-6 bg-white h-full relative">
       {initialLoading && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-[1px]">
-          <Loader2 size={24} className="animate-spin text-blue-600" />
+          <Loader2 size={24} className="animate-spin text-[#0084FF]" />
         </div>
       )}
       {/* Active Model Banner */}
       {activeProvider && (
-        <div className="rounded-xl p-4 flex items-center justify-between bg-blue-50 border border-blue-200">
+        <div className="rounded-xl p-4 flex items-center justify-between bg-[#e6f4ff] border border-[#99ceff]">
           <div>
             <p className="text-[10px] uppercase tracking-widest mb-1 text-gray-500 font-semibold">
               Active Generation Model
             </p>
             <div className="flex items-center gap-2">
               <div className="status-dot-green" />
-              <span className="text-sm font-semibold text-blue-700 font-mono">
+              <span className="text-sm font-semibold text-[#0070d6] font-mono">
                 {activeProvider}/{activeModel}
               </span>
             </div>
           </div>
-          <Zap size={20} className="text-blue-600" />
+          <Zap size={20} className="text-[#0084FF]" />
         </div>
       )}
 
@@ -389,17 +389,17 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
               key={provider.key}
               className={`rounded-xl p-4 flex flex-col gap-4 border transition-all ${
                 isActive
-                  ? "bg-blue-50 border-blue-300"
+                  ? "bg-[#e6f4ff] border-[#66b8ff]"
                   : "bg-white border-gray-200 hover:border-gray-300"
               }`}
             >
               {/* Header */}
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg border ${
-                    isActive ? "bg-blue-100 border-blue-200" : "bg-gray-100 border-gray-200"
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
+                    isActive ? "bg-[#0084FF] border-[#0070d6]" : "bg-gray-100 border-gray-200"
                   }`}>
-                    {provider.icon}
+                    {(() => { const Icon = provider.icon; return <Icon size={18} className={isActive ? "text-white" : "text-gray-600"} />; })()}
                   </div>
                   <div>
                     <p className="text-sm font-bold text-gray-900">{provider.name}</p>
@@ -437,7 +437,7 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
                   placeholder="sk-••••••••••••••••••••"
                   value={keyInputs[provider.key] || ""}
                   onChange={(e) => setKeyInputs((prev) => ({ ...prev, [provider.key]: e.target.value }))}
-                  className="w-full pl-3 pr-9 py-2.5 rounded-lg text-xs outline-none border border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 font-mono"
+                  className="w-full pl-3 pr-9 py-2.5 rounded-lg text-xs outline-none border border-gray-300 bg-white text-gray-900 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] font-mono"
                 />
                 <button
                   type="button"
@@ -460,13 +460,13 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
                   <button
                     type="button"
                     onClick={() => openModelDropdown(provider.key)}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs border border-gray-300 bg-white text-gray-700 hover:border-blue-400 transition-all"
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs border border-gray-300 bg-white text-gray-700 hover:border-[#0084FF] transition-all"
                   >
                     <span className="font-mono truncate">
                       {setting?.active_model || "Select model..."}
                     </span>
                     {isLoadingModels ? (
-                      <Loader2 size={12} className="animate-spin text-blue-600 shrink-0" />
+                      <Loader2 size={12} className="animate-spin text-[#0084FF] shrink-0" />
                     ) : (
                       <ChevronDown size={12} className="text-gray-400 shrink-0" />
                     )}
@@ -486,7 +486,7 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
                         type="button"
                         onClick={() => fetchProviderModels(provider.key)}
                         disabled={isLoadingModels}
-                        className="flex items-center justify-center gap-1 px-3 py-2 text-[10px] font-medium text-blue-600 bg-blue-50 border-b border-gray-100 hover:bg-blue-100 disabled:opacity-50"
+                        className="flex items-center justify-center gap-1 px-3 py-2 text-[10px] font-medium text-[#0084FF] bg-[#e6f4ff] border-b border-gray-100 hover:bg-[#cce9ff] disabled:opacity-50"
                       >
                         {isLoadingModels ? (
                           <Loader2 size={10} className="animate-spin" />
@@ -509,9 +509,9 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
                               key={model}
                               type="button"
                               onClick={() => setAsActive(provider.key, model)}
-                              className={`w-full text-left px-3 py-2 text-[11px] hover:bg-blue-50 transition-colors border-b border-gray-100 font-mono ${
+                              className={`w-full text-left px-3 py-2 text-[11px] hover:bg-[#e6f4ff] transition-colors border-b border-gray-100 font-mono ${
                                 setting?.active_model === model
-                                  ? "bg-blue-50 text-blue-700 font-semibold"
+                                  ? "bg-[#e6f4ff] text-[#0070d6] font-semibold"
                                   : "text-gray-700"
                               }`}
                             >
@@ -534,7 +534,7 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
                   type="button"
                   onClick={() => saveKey(provider.key)}
                   disabled={isSaving}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-medium bg-blue-600 text-white hover:bg-blue-700 transition-all disabled:opacity-50"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-medium bg-[#0084FF] text-white hover:bg-[#0070d6] transition-all disabled:opacity-50"
                 >
                   {isSaving ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                   Save
@@ -566,8 +566,8 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
                   onClick={() => setAsActive(provider.key, setting.active_model!)}
                   className={`py-2 rounded-lg text-[11px] font-semibold transition-all border ${
                     isActive
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-600"
+                      ? "bg-[#0084FF] text-white border-[#0084FF]"
+                      : "bg-white text-gray-600 border-gray-300 hover:border-[#0084FF] hover:text-[#0084FF]"
                   }`}
                 >
                   {isActive ? "✓ Active Model" : "Set as Active"}

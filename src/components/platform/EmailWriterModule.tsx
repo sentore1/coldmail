@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { Lead, ToneType } from "@/types/platform";
@@ -19,7 +19,7 @@ interface EmailWriterProps {
 }
 
 const TONE_OPTIONS: { value: ToneType; label: string; desc: string }[] = [
-  { value: "Direct",     label: "Direct",     desc: "Hard direct. No politeness. Problem → Solution → CTA" },
+  { value: "Direct",     label: "Direct",     desc: "Hard direct. No politeness. Problem ? Solution ? CTA" },
   { value: "Aggressive", label: "Aggressive", desc: "High urgency, creates FOMO, pushes action hard" },
   { value: "Surgical",   label: "Surgical",   desc: "Hyper-personalized, proves you did your homework" },
 ];
@@ -27,7 +27,7 @@ const TONE_OPTIONS: { value: ToneType; label: string; desc: string }[] = [
 export default function EmailWriterModule({ userId, preloadedLead }: EmailWriterProps) {
   const supabase = createClient();
 
-  // ── Shared ────────────────────────────────────────────────────────────────
+  // -- Shared ----------------------------------------------------------------
   const [leads, setLeads]           = useState<Lead[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [mode, setMode]             = useState<"single" | "bulk" | "manual">("single");
@@ -49,7 +49,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
       .finally(() => setPryroProfileLoading(false));
   }, []);
 
-  // ── Single mode ───────────────────────────────────────────────────────────
+  // -- Single mode -----------------------------------------------------------
   const [selectedLead, setSelectedLead]       = useState<Lead | null>(preloadedLead || null);
   const [tone, setTone]                       = useState<ToneType>("Direct");
   const [customPainPoint, setCustomPainPoint] = useState("");
@@ -69,13 +69,13 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
   const [customRecipient, setCustomRecipient]       = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // ── Manual compose ────────────────────────────────────────────────────────
+  // -- Manual compose --------------------------------------------------------
   const [manualTo, setManualTo]           = useState("");
   const [manualSubject, setManualSubject] = useState("");
   const [manualBody, setManualBody]       = useState("");
   const [isSendingManual, setIsSendingManual] = useState(false);
 
-  // ── Bulk mode ─────────────────────────────────────────────────────────────
+  // -- Bulk mode -------------------------------------------------------------
   const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
   const [bulkEmails, setBulkEmails]           = useState<any[]>([]);
   const [previewIndex, setPreviewIndex]       = useState(-1);
@@ -85,7 +85,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
   const [nicheFilter, setNicheFilter]         = useState("all");
   const [bulkUseWebResearch, setBulkUseWebResearch] = useState(false);
 
-  // ── Init ──────────────────────────────────────────────────────────────────
+  // -- Init ------------------------------------------------------------------
   useEffect(() => { fetchLeads(); loadSenderProfile(); }, []);
 
   useEffect(() => {
@@ -111,10 +111,10 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
 
   /** Load saved company/service from followup_settings */
   const loadSenderProfile = async () => {
-    // Profile is now hardcoded — nothing to load
+    // Profile is now hardcoded � nothing to load
   };
 
-  /** Save company/service — no-op since profile is hardcoded */
+  /** Save company/service � no-op since profile is hardcoded */
   const saveSenderProfile = async (_company: string, _service: string) => {};
 
   const filteredLeads = nicheFilter === "all"
@@ -133,7 +133,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
       )
     : leads;
 
-  // ── Shared send helper ────────────────────────────────────────────────────
+  // -- Shared send helper ----------------------------------------------------
   const callSendEmail = async (to: string, subject: string, body: string, leadId?: string) => {
     const res = await fetch("/api/send-email", {
       method: "POST",
@@ -156,11 +156,11 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
     }
   };
 
-  // ── Single: generate ──────────────────────────────────────────────────────
+  // -- Single: generate ------------------------------------------------------
   const generateEmail = async () => {
     if (!selectedLead) { toast.error("Select a lead first"); return; }
     if (!yourService) {
-      toast.error(pryroProfileLoading ? "Loading Pryro website info…" : "Pryro website profile unavailable");
+      toast.error(pryroProfileLoading ? "Loading Pryro website info�" : "Pryro website profile unavailable");
       return;
     }
     setIsGenerating(true);
@@ -172,7 +172,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
         isWeakLeadContext(selectedLead.company_context, selectedLead.company_name) &&
         (selectedLead.website || selectedLead.company_name)
       ) {
-        toast.info("Enriching lead first for a stronger email…");
+        toast.info("Enriching lead first for a stronger email�");
         const enriched = await enrichLead(selectedLead);
         if (enriched) leadForGen = enriched;
       }
@@ -245,9 +245,9 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
         setEnriched(true);
         
         if (data.email && data.email !== lead.email) {
-          toast.success(`✓ Found real email: ${data.email}`);
+          toast.success(`? Found real email: ${data.email}`);
         } else if (data.company_context) {
-          toast.success("✓ Added company context");
+          toast.success("? Added company context");
         } else {
           toast.info("Enriched, but no new email found");
         }
@@ -311,7 +311,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
       );
       if (data.success) {
         toast.success("Sent to " + recipient + " via " + data.accountUsed);
-        // Update local lead status immediately — don't wait for CRM refresh
+        // Update local lead status immediately � don't wait for CRM refresh
         const updatedLeadId = data.leadId ?? (isDbLead ? selectedLead!.id : null);
         if (updatedLeadId) {
           setSelectedLead((prev) => prev ? { ...prev, status: "Email Sent" } : prev);
@@ -348,7 +348,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
     finally { setIsSendingSingle(false); }
   };
 
-  // ── Manual compose ────────────────────────────────────────────────────────
+  // -- Manual compose --------------------------------------------------------
   const sendManualCompose = async () => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(manualTo)) { toast.error("Enter a valid recipient email"); return; }
     if (!manualSubject.trim()) { toast.error("Enter a subject"); return; }
@@ -364,7 +364,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
     finally { setIsSendingManual(false); }
   };
 
-  // ── Bulk helpers ──────────────────────────────────────────────────────────
+  // -- Bulk helpers ----------------------------------------------------------
   const toggleLead = (id: string) => {
     setSelectedLeadIds((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
   };
@@ -379,7 +379,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
   const generateBulkEmails = async () => {
     if (selectedLeadIds.size === 0) { toast.error("Select at least one lead"); return; }
     if (!yourService) {
-      toast.error(pryroProfileLoading ? "Loading Pryro website info…" : "Pryro website profile unavailable");
+      toast.error(pryroProfileLoading ? "Loading Pryro website info�" : "Pryro website profile unavailable");
       return;
     }
 
@@ -429,7 +429,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
         return;
       }
 
-      // ── Read SSE stream ──────────────────────────────────────────────────
+      // -- Read SSE stream --------------------------------------------------
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
@@ -452,7 +452,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
           try { payload = JSON.parse(dataLine[1]); } catch { continue; }
 
           if (event === "start") {
-            // nothing — we already cleared bulkEmails above
+            // nothing � we already cleared bulkEmails above
           } else if (event === "email") {
             const e = payload.email;
             setBulkEmails((prev) => [
@@ -483,7 +483,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
         }
       }
     } catch (err: any) {
-      toast.error(err.message || "Network error — could not reach generation server");
+      toast.error(err.message || "Network error � could not reach generation server");
     } finally {
       setIsGenerating(false);
     }
@@ -492,11 +492,11 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
   const sendBulkEmails = async () => {
     if (bulkEmails.length === 0) return;
 
-    // Filter out any emails with no recipient — warn the user
+    // Filter out any emails with no recipient � warn the user
     const validEmails = bulkEmails.filter(e => e.lead_email && e.lead_email.trim());
     const skipped = bulkEmails.length - validEmails.length;
     if (skipped > 0) {
-      toast.warning(`${skipped} lead${skipped > 1 ? 's' : ''} skipped — no email address. Add emails to those leads first.`);
+      toast.warning(`${skipped} lead${skipped > 1 ? 's' : ''} skipped � no email address. Add emails to those leads first.`);
     }
     if (validEmails.length === 0) {
       toast.error("None of the selected leads have an email address.");
@@ -504,7 +504,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
     }
 
     setIsSendingBulk(true);
-    const sendToastId = toast.loading(`Sending ${validEmails.length} emails in batches of 10…`);
+    const sendToastId = toast.loading(`Sending ${validEmails.length} emails in batches of 10�`);
     try {
       const emailsToSend = validEmails.map(email => ({
         lead_id: email.lead?.id || "",
@@ -566,7 +566,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
     finally { setIsSendingBulk(false); }
   };
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // -- Render ----------------------------------------------------------------
   return (
     <div className="flex flex-col h-full overflow-hidden">
 
@@ -581,7 +581,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
             key={id}
             onClick={() => setMode(id as any)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-              mode === id ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              mode === id ? "bg-[#0084FF] text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >
             <Icon size={14} />
@@ -590,16 +590,16 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
         ))}
         {mode === "bulk" && (
           <span className="ml-auto text-sm text-gray-600 font-medium">
-            {selectedLeadIds.size} selected · {leads.filter(l => !SENT_STATUSES.has(l.status)).length} unsent
+            {selectedLeadIds.size} selected � {leads.filter(l => !SENT_STATUSES.has(l.status)).length} unsent
           </span>
         )}
       </div>
 
       <div className="flex-1 overflow-y-auto">
 
-        {/* ══════════════════════════════════════════════════════════════════
+        {/* ------------------------------------------------------------------
             SINGLE EMAIL MODE
-        ══════════════════════════════════════════════════════════════════ */}
+        ------------------------------------------------------------------ */}
         {mode === "single" && (
           <div className="p-6 flex flex-col gap-5 w-full max-w-3xl">
 
@@ -609,10 +609,10 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setLeadDropdownOpen((v) => !v)}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 hover:border-blue-400 transition-all"
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-gray-300 bg-white text-sm text-gray-700 hover:border-[#0084FF] transition-all"
                 >
                   <span className={selectedLead ? "text-gray-900 font-medium" : "text-gray-400"}>
-                    {selectedLead ? `${selectedLead.company_name}${selectedLead.email ? " — " + selectedLead.email : ""}` : "Select a lead…"}
+                    {selectedLead ? `${selectedLead.company_name}${selectedLead.email ? " � " + selectedLead.email : ""}` : "Select a lead�"}
                   </span>
                   <ChevronDown size={15} className="text-gray-400 flex-shrink-0" />
                 </button>
@@ -623,8 +623,8 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                         autoFocus
                         value={leadSearch}
                         onChange={(e) => setLeadSearch(e.target.value)}
-                        placeholder="Search leads…"
-                        className="w-full px-3 py-2 text-sm text-gray-900 rounded-lg border border-gray-200 outline-none focus:border-blue-400 placeholder:text-gray-400"
+                        placeholder="Search leads�"
+                        className="w-full px-3 py-2 text-sm text-gray-900 rounded-lg border border-gray-200 outline-none focus:border-[#3399ff] placeholder:text-gray-400"
                       />
                     </div>
                     <div className="max-h-52 overflow-y-auto">
@@ -635,10 +635,10 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                         <button
                           key={l.id}
                           onClick={() => { setSelectedLead(l); setLeadDropdownOpen(false); setLeadSearch(""); setGeneratedEmail(null); setEnriched(false); setUseCustomRecipient(false); }}
-                          className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors"
+                          className="w-full text-left px-4 py-2.5 hover:bg-[#e6f4ff] transition-colors"
                         >
                           <p className="text-sm font-medium text-gray-800">{l.company_name}</p>
-                          <p className="text-xs text-gray-400">{l.email || "no email"} {l.niche ? "· " + l.niche : ""}</p>
+                          <p className="text-xs text-gray-400">{l.email || "no email"} {l.niche ? "� " + l.niche : ""}</p>
                         </button>
                       ))}
                     </div>
@@ -648,15 +648,15 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
               {selectedLead && (
                 <div className="mt-2 flex flex-col gap-2">
                   <div className="flex items-center gap-2 flex-wrap">
-                    {selectedLead.niche && <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-100">{selectedLead.niche}</span>}
-                    {selectedLead.location && <span className="text-[10px] text-gray-400">📍 {selectedLead.location}</span>}
+                    {selectedLead.niche && <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#e6f4ff] text-[#0084FF] border border-[#cce9ff]">{selectedLead.niche}</span>}
+                    {selectedLead.location && <span className="text-[10px] text-gray-400">?? {selectedLead.location}</span>}
                     <button
                       onClick={() => enrichLead(selectedLead)}
                       disabled={isEnriching}
                       className="ml-auto flex items-center gap-1 text-[10px] px-2 py-1 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors disabled:opacity-50"
                     >
                       {isEnriching ? <Loader2 size={10} className="animate-spin" /> : <Zap size={10} />}
-                      {enriched ? "Enriched ✓" : "Enrich lead"}
+                      {enriched ? "Enriched ?" : "Enrich lead"}
                     </button>
                   </div>
                   
@@ -667,7 +667,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                     selectedLead.email.startsWith('hello@')
                   ) && (
                     <div className="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                      <span className="text-yellow-600 text-sm">⚠️</span>
+                      <span className="text-yellow-600 text-sm">??</span>
                       <div className="flex-1">
                         <p className="text-xs font-medium text-yellow-800">Generated Email - May Bounce</p>
                         <p className="text-xs text-yellow-700 mt-0.5">
@@ -683,11 +683,11 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                     selectedLead.email.startsWith('contact@') || 
                     selectedLead.email.startsWith('hello@')
                   ) && (
-                    <div className="flex items-start gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                      <span className="text-blue-600 text-sm">ℹ️</span>
+                    <div className="flex items-start gap-2 p-3 bg-[#e6f4ff] border border-[#99ceff] rounded-lg">
+                      <span className="text-[#0084FF] text-sm">??</span>
                       <div className="flex-1">
-                        <p className="text-xs font-medium text-blue-800">No Real Email Found</p>
-                        <p className="text-xs text-blue-700 mt-0.5">
+                        <p className="text-xs font-medium text-[#005cb3]">No Real Email Found</p>
+                        <p className="text-xs text-[#0070d6] mt-0.5">
                           Enrichment couldn't find a real email on their website. You can try using a custom email or search for their contact info manually.
                         </p>
                       </div>
@@ -707,12 +707,12 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                     onClick={() => setTone(t.value)}
                     className={`flex flex-col gap-1 p-3 rounded-lg border-2 text-left transition-all ${
                       tone === t.value
-                        ? "border-blue-600 bg-blue-50"
+                        ? "border-transparent bg-[#0084FF]"
                         : "border-gray-200 bg-white hover:border-gray-300"
                     }`}
                   >
-                    <span className={`text-xs font-bold ${tone === t.value ? "text-blue-700" : "text-gray-900"}`}>{t.label}</span>
-                    <span className="text-[10px] text-gray-500 leading-tight">{t.desc}</span>
+                    <span className={`text-xs font-bold ${tone === t.value ? "text-white" : "text-gray-900"}`}>{t.label}</span>
+                    <span className={`text-[10px] leading-tight ${tone === t.value ? "text-blue-100" : "text-gray-500"}`}>{t.desc}</span>
                   </button>
                 ))}
               </div>
@@ -721,13 +721,13 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
             {/* Optional pain point */}
             <div>
               <label className="block text-sm font-semibold text-gray-800 mb-2">
-                Specific Pain Point <span className="normal-case font-normal text-gray-400">(optional — makes email sharper)</span>
+                Specific Pain Point <span className="normal-case font-normal text-gray-400">(optional � makes email sharper)</span>
               </label>
               <input
                 value={customPainPoint}
                 onChange={(e) => setCustomPainPoint(e.target.value)}
-                placeholder="e.g. losing leads due to slow follow-up, high customer churn, manual reporting…"
-                className="w-full px-4 py-3 rounded-lg text-sm border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white outline-none transition-all"
+                placeholder="e.g. losing leads due to slow follow-up, high customer churn, manual reporting�"
+                className="w-full px-4 py-3 rounded-lg text-sm border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] bg-white outline-none transition-all"
               />
             </div>
 
@@ -735,10 +735,10 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
             <button
               onClick={generateEmail}
               disabled={isGenerating || !selectedLead}
-              className="w-full py-3.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white bg-blue-600 hover:bg-blue-700"
+              className="w-full py-3.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white bg-[#0084FF] hover:bg-[#0070d6]"
             >
               {isGenerating
-                ? <><Loader2 size={16} className="animate-spin" /> Generating with AI…</>
+                ? <><Loader2 size={16} className="animate-spin" /> Generating with AI�</>
                 : <><Sparkles size={16} /> Generate Email</>}
             </button>
 
@@ -750,7 +750,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                   <div className="flex items-center gap-2">
                     <CheckCircle size={14} className="text-green-500" />
                     <span className="text-xs font-semibold text-gray-700">Generated Email</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600">{generatedEmail.model}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#e6f4ff] text-[#0084FF]">{generatedEmail.model}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <button onClick={() => { setIsEditing((v) => !v); setEditSubject(generatedEmail.subject); setEditBody(generatedEmail.body); }}
@@ -773,7 +773,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                 <div className="px-4 py-3 border-b border-gray-100">
                   <p className="text-xs font-semibold text-gray-700 mb-1">Subject</p>
                   {isEditing
-                    ? <input value={editSubject} onChange={(e) => setEditSubject(e.target.value)} className="w-full text-sm font-semibold text-gray-900 bg-white border border-blue-400 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-200" />
+                    ? <input value={editSubject} onChange={(e) => setEditSubject(e.target.value)} className="w-full text-sm font-semibold text-gray-900 bg-white border border-[#3399ff] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#99ceff]" />
                     : <p className="text-sm font-semibold text-gray-900">{generatedEmail.subject}</p>}
                 </div>
 
@@ -781,7 +781,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                 <div className="px-4 py-3">
                   <p className="text-xs font-semibold text-gray-700 mb-2">Body</p>
                   {isEditing
-                    ? <textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} rows={12} className="w-full text-sm text-gray-900 bg-white border border-blue-400 rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-200 resize-none" style={{ lineHeight: "1.7" }} />
+                    ? <textarea value={editBody} onChange={(e) => setEditBody(e.target.value)} rows={12} className="w-full text-sm text-gray-900 bg-white border border-[#3399ff] rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-[#99ceff] resize-none" style={{ lineHeight: "1.7" }} />
                     : <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans leading-relaxed">{generatedEmail.body}</pre>}
                 </div>
 
@@ -791,14 +791,14 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setUseCustomRecipient(false)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${!useCustomRecipient ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${!useCustomRecipient ? "bg-[#0084FF] text-white border-[#0084FF]" : "bg-white text-gray-600 border-gray-300 hover:border-[#0084FF]"}`}
                     >
                       <Mail size={11} />
                       Lead's email {selectedLead?.email ? `(${selectedLead.email})` : "(none)"}
                     </button>
                     <button
                       onClick={() => setUseCustomRecipient(true)}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${useCustomRecipient ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${useCustomRecipient ? "bg-[#0084FF] text-white border-[#0084FF]" : "bg-white text-gray-600 border-gray-300 hover:border-[#0084FF]"}`}
                     >
                       <AtSign size={11} />
                       Custom recipient
@@ -810,18 +810,18 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                       type="email"
                       value={customRecipient}
                       onChange={(e) => setCustomRecipient(e.target.value)}
-                      placeholder="Enter any email address…"
-                      className="w-full px-4 py-2.5 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white outline-none transition-all placeholder:text-gray-400"
+                      placeholder="Enter any email address�"
+                      className="w-full px-4 py-2.5 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] bg-white outline-none transition-all placeholder:text-gray-400"
                     />
                   )}
 
                   <button
                     onClick={sendSingleEmail}
                     disabled={isSendingSingle}
-                    className="w-full py-3 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-white bg-blue-600 hover:bg-blue-700"
+                    className="w-full py-3 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 text-white bg-[#0084FF] hover:bg-[#0070d6]"
                   >
                     {isSendingSingle
-                      ? <><Loader2 size={15} className="animate-spin" /> Sending…</>
+                      ? <><Loader2 size={15} className="animate-spin" /> Sending�</>
                       : <><Send size={15} /> Send Email</>}
                   </button>
                 </div>
@@ -830,9 +830,9 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
           </div>
         )}
 
-        {/* ══════════════════════════════════════════════════════════════════
+        {/* ------------------------------------------------------------------
             BULK GENERATOR MODE
-        ══════════════════════════════════════════════════════════════════ */}
+        ------------------------------------------------------------------ */}
         {mode === "bulk" && (
           <div className="p-6 flex flex-col gap-5">
             {bulkEmails.length === 0 && !isGenerating ? (
@@ -845,11 +845,11 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                       <button key={t.value} onClick={() => setBulkTone(t.value)}
                         className={`flex flex-col gap-1 p-3 rounded-lg border-2 text-left transition-all ${
                           bulkTone === t.value
-                            ? "border-blue-600 bg-blue-50"
+                            ? "border-transparent bg-[#0084FF]"
                             : "border-gray-200 bg-white hover:border-gray-300"
                         }`}>
-                        <span className={`text-xs font-bold ${bulkTone === t.value ? "text-blue-700" : "text-gray-900"}`}>{t.label}</span>
-                        <span className="text-[10px] text-gray-500 leading-tight">{t.desc}</span>
+                        <span className={`text-xs font-bold ${bulkTone === t.value ? "text-white" : "text-gray-900"}`}>{t.label}</span>
+                        <span className={`text-[10px] leading-tight ${bulkTone === t.value ? "text-blue-100" : "text-gray-500"}`}>{t.desc}</span>
                       </button>
                     ))}
                   </div>
@@ -858,11 +858,11 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                 {/* Pain point */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-800 mb-2">Pain Point <span className="normal-case font-normal text-gray-400">(optional)</span></label>
-                  <input value={bulkPainPoint} onChange={(e) => setBulkPainPoint(e.target.value)} placeholder="e.g. slow follow-up, high churn…"
-                    className="w-full px-4 py-3 rounded-lg text-sm border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white outline-none transition-all" />
+                  <input value={bulkPainPoint} onChange={(e) => setBulkPainPoint(e.target.value)} placeholder="e.g. slow follow-up, high churn�"
+                    className="w-full px-4 py-3 rounded-lg text-sm border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] bg-white outline-none transition-all" />
                 </div>
 
-                {/* Niche filter — clicking a niche auto-selects all leads in it */}
+                {/* Niche filter � clicking a niche auto-selects all leads in it */}
                 {categories.length > 0 && (
                   <div>
                     <label className="block text-sm font-semibold text-gray-800 mb-2">
@@ -870,7 +870,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                     </label>
                     <div className="flex flex-wrap gap-2">
                       <button onClick={() => { setNicheFilter("all"); setSelectedLeadIds(new Set()); }}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium border-2 transition-all ${nicheFilter === "all" ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-200 hover:border-blue-400"}`}>
+                        className={`px-3 py-1.5 rounded-lg text-xs font-medium border-2 transition-all ${nicheFilter === "all" ? "bg-[#0084FF] text-white border-[#0084FF]" : "bg-white text-gray-600 border-gray-200 hover:border-[#0084FF]"}`}>
                         All ({leads.filter(l => !SENT_STATUSES.has(l.status)).length} unsent)
                       </button>
                       {categories.map((cat) => {
@@ -882,7 +882,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                             // Auto-select ONLY unsent leads in this niche
                             setSelectedLeadIds(new Set(catUnsent.map(l => l.id)));
                           }}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-medium border-2 transition-all ${nicheFilter === cat ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-200 hover:border-blue-400"}`}>
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium border-2 transition-all ${nicheFilter === cat ? "bg-[#0084FF] text-white border-[#0084FF]" : "bg-white text-gray-600 border-gray-200 hover:border-[#0084FF]"}`}>
                             {cat}
                             <span className="ml-1 text-green-600 font-bold">{catUnsent.length}</span>
                             {catSent.length > 0 && <span className="ml-1 text-gray-400">({catSent.length} sent)</span>}
@@ -899,7 +899,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                     <label className="text-sm font-semibold text-gray-800">
                       Unsent Leads ({selectedLeadIds.size} selected)
                     </label>
-                    <button onClick={selectAll} className="text-xs text-blue-600 hover:text-blue-700 font-medium">
+                    <button onClick={selectAll} className="text-xs text-[#0084FF] hover:text-[#0070d6] font-medium">
                       {unsentLeads.every((l) => selectedLeadIds.has(l.id)) ? "Deselect all" : "Select all unsent"}
                     </button>
                   </div>
@@ -908,10 +908,10 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                       <p className="text-xs text-gray-400 text-center py-6">No leads found</p>
                     )}
 
-                    {/* Unsent leads — selectable */}
+                    {/* Unsent leads � selectable */}
                     {unsentLeads.length === 0 && alreadySent.length > 0 && (
                       <div className="px-4 py-4 text-center">
-                        <p className="text-sm font-semibold text-green-700">✅ All leads in this niche have been contacted!</p>
+                        <p className="text-sm font-semibold text-green-700">? All leads in this niche have been contacted!</p>
                         <p className="text-xs text-gray-500 mt-1">Add more leads from the Scraper to send more emails.</p>
                       </div>
                     )}
@@ -919,24 +919,24 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                     {unsentLeads.map((lead, i) => (
                       <div key={lead.id}
                         onClick={() => toggleLead(lead.id)}
-                        className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${i !== 0 || alreadySent.length > 0 ? "border-t border-gray-100" : ""} ${selectedLeadIds.has(lead.id) ? "bg-blue-50" : "hover:bg-gray-50"}`}>
+                        className={`flex items-center gap-3 px-4 py-3 cursor-pointer transition-colors ${i !== 0 || alreadySent.length > 0 ? "border-t border-gray-100" : ""} ${selectedLeadIds.has(lead.id) ? "bg-[#e6f4ff]" : "hover:bg-gray-50"}`}>
                         {selectedLeadIds.has(lead.id)
-                          ? <CheckSquare size={15} className="text-blue-600 flex-shrink-0" />
+                          ? <CheckSquare size={15} className="text-[#0084FF] flex-shrink-0" />
                           : <Square size={15} className="text-gray-300 flex-shrink-0" />}
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-800 truncate">{lead.company_name}</p>
-                          <p className="text-xs text-gray-400 truncate">{lead.email || "no email"}{lead.niche ? " · " + lead.niche : ""}</p>
+                          <p className="text-xs text-gray-400 truncate">{lead.email || "no email"}{lead.niche ? " � " + lead.niche : ""}</p>
                         </div>
                       </div>
                     ))}
 
-                    {/* Already sent — greyed out, non-selectable, collapsed */}
+                    {/* Already sent � greyed out, non-selectable, collapsed */}
                     {alreadySent.length > 0 && (
                       <div className="border-t-2 border-dashed border-gray-200">
                         <div className="px-4 py-2 bg-gray-50 flex items-center gap-2">
                           <CheckCircle size={12} className="text-green-500" />
                           <span className="text-xs font-semibold text-gray-500">
-                            Already Sent ({alreadySent.length}) — excluded from selection
+                            Already Sent ({alreadySent.length}) � excluded from selection
                           </span>
                         </div>
                         {alreadySent.map((lead, i) => (
@@ -945,7 +945,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                             <CheckCircle size={13} className="text-green-500 flex-shrink-0" />
                             <div className="flex-1 min-w-0">
                               <p className="text-xs font-medium text-gray-600 truncate line-through">{lead.company_name}</p>
-                              <p className="text-[10px] text-gray-400 truncate">{lead.email} · {lead.status}</p>
+                              <p className="text-[10px] text-gray-400 truncate">{lead.email} � {lead.status}</p>
                             </div>
                           </div>
                         ))}
@@ -955,21 +955,21 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                 </div>
 
                 <button onClick={generateBulkEmails} disabled={isGenerating || selectedLeadIds.size === 0}
-                  className="w-full py-3.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white bg-blue-600 hover:bg-blue-700">
+                  className="w-full py-3.5 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white bg-[#0084FF] hover:bg-[#0070d6]">
                   {isGenerating
-                    ? <><Loader2 size={16} className="animate-spin" /> Generating… {bulkEmails.length > 0 ? `${bulkEmails.length} / ${selectedLeadIds.size}` : ""}</>
+                    ? <><Loader2 size={16} className="animate-spin" /> Generating� {bulkEmails.length > 0 ? `${bulkEmails.length} / ${selectedLeadIds.size}` : ""}</>
                     : <><Sparkles size={16} /> Generate {selectedLeadIds.size} Emails</>}
                 </button>
               </>
             ) : (
-              /* ── Bulk review table ─────────────────────────────────────── */
+              /* -- Bulk review table --------------------------------------- */
               <div className="flex flex-col h-full">
                 {/* Header bar */}
                 <div className="flex items-center justify-between mb-3 flex-shrink-0">
                   <div className="flex items-center gap-3">
                     <p className="text-sm font-bold text-gray-900">
                       {isGenerating
-                        ? <span className="flex items-center gap-2"><Loader2 size={14} className="animate-spin text-blue-600" /> Generating… {bulkEmails.length} / {selectedLeadIds.size}</span>
+                        ? <span className="flex items-center gap-2"><Loader2 size={14} className="animate-spin text-[#0084FF]" /> Generating� {bulkEmails.length} / {selectedLeadIds.size}</span>
                         : `${bulkEmails.length} emails ready to send`
                       }
                     </p>
@@ -980,7 +980,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                       onClick={() => setBulkEmails([])}
                       className="text-xs text-gray-500 hover:text-gray-700 border border-gray-300 px-3 py-1.5 rounded-lg hover:bg-gray-50"
                     >
-                      ← Back
+                      ? Back
                     </button>
                   )}
                 </div>
@@ -1008,7 +1008,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                               <p className="text-xs font-semibold text-gray-900 truncate max-w-[140px]">{email.company_name}</p>
                             </td>
                             <td className="px-4 py-3">
-                              <p className="text-xs text-gray-500 truncate max-w-[180px]">{email.lead_email || "—"}</p>
+                              <p className="text-xs text-gray-500 truncate max-w-[180px]">{email.lead_email || "�"}</p>
                             </td>
                             <td className="px-4 py-3">
                               {email.isEditing ? (
@@ -1019,7 +1019,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                                     updated[idx].editSubject = e.target.value;
                                     setBulkEmails(updated);
                                   }}
-                                  className="w-full text-xs text-gray-900 border border-blue-400 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-blue-300"
+                                  className="w-full text-xs text-gray-900 border border-[#3399ff] rounded px-2 py-1 outline-none focus:ring-1 focus:ring-blue-300"
                                 />
                               ) : (
                                 <p className="text-xs text-gray-800 truncate max-w-xs">{email.editSubject || email.subject}</p>
@@ -1029,13 +1029,13 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                               {email.isFallback ? (
                                 <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-700 border border-amber-200 font-medium">Template</span>
                               ) : (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-medium">AI</span>
+                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#e6f4ff] text-[#0070d6] border border-[#99ceff] font-medium">AI</span>
                               )}
                             </td>
                             <td className="px-4 py-3">
                               <button
                                 onClick={() => setPreviewIndex(idx)}
-                                className="p-1.5 rounded hover:bg-blue-50 text-gray-500 hover:text-blue-600 transition-colors"
+                                className="p-1.5 rounded hover:bg-[#e6f4ff] text-gray-500 hover:text-[#0084FF] transition-colors"
                                 title="View & edit full email"
                               >
                                 <Edit3 size={13} />
@@ -1060,13 +1060,13 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                   <button
                     onClick={sendBulkEmails}
                     disabled={isSendingBulk || isGenerating}
-                    className="flex-1 py-2.5 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#0084FF] hover:bg-[#0070d6] disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isSendingBulk
-                      ? <><Loader2 size={15} className="animate-spin" /> Sending…</>
+                      ? <><Loader2 size={15} className="animate-spin" /> Sending�</>
                       : isGenerating
-                      ? <><Loader2 size={15} className="animate-spin" /> Generating {bulkEmails.length}/{selectedLeadIds.size}…</>
-                      : <><Send size={15} /> Send {bulkEmails.length} Emails · 10 per batch · 10 min apart</>
+                      ? <><Loader2 size={15} className="animate-spin" /> Generating {bulkEmails.length}/{selectedLeadIds.size}�</>
+                      : <><Send size={15} /> Send {bulkEmails.length} Emails � 10 per batch � 10 min apart</>
                     }
                   </button>
                 </div>
@@ -1118,7 +1118,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                               updated[previewIndex].editSubject = e.target.value;
                               setBulkEmails(updated);
                             }}
-                            className="w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-900 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
+                            className="w-full px-3 py-2.5 rounded-lg text-sm font-semibold text-gray-900 border border-gray-300 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] outline-none"
                           />
                         </div>
                         <div className="flex-1">
@@ -1131,7 +1131,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                               setBulkEmails(updated);
                             }}
                             rows={16}
-                            className="w-full px-3 py-2.5 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none resize-none font-sans leading-relaxed"
+                            className="w-full px-3 py-2.5 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] outline-none resize-none font-sans leading-relaxed"
                           />
                         </div>
                       </div>
@@ -1147,9 +1147,9 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                         {previewIndex < bulkEmails.length - 1 && (
                           <button
                             onClick={() => setPreviewIndex(previewIndex + 1)}
-                            className="px-4 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
+                            className="px-4 py-2 rounded-lg text-sm font-medium bg-[#0084FF] text-white hover:bg-[#0070d6]"
                           >
-                            Next →
+                            Next ?
                           </button>
                         )}
                       </div>
@@ -1161,14 +1161,14 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
           </div>
         )}
 
-        {/* ══════════════════════════════════════════════════════════════════
+        {/* ------------------------------------------------------------------
             MANUAL COMPOSE MODE
-        ══════════════════════════════════════════════════════════════════ */}
+        ------------------------------------------------------------------ */}
         {mode === "manual" && (
           <div className="p-6 flex flex-col gap-5 w-full max-w-3xl">
-            <div className="rounded-lg p-4 bg-blue-50 border border-blue-200">
-              <p className="text-sm font-semibold text-blue-700">Manual Compose</p>
-              <p className="text-xs mt-1 text-blue-700/80">Write and send to any email address — no lead required. Sent via your configured SMTP account.</p>
+            <div className="rounded-lg p-4 bg-[#e6f4ff] border border-[#99ceff]">
+              <p className="text-sm font-semibold text-[#0070d6]">Manual Compose</p>
+              <p className="text-xs mt-1 text-[#0070d6]/80">Write and send to any email address � no lead required. Sent via your configured SMTP account.</p>
             </div>
 
             <div>
@@ -1177,7 +1177,7 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
                 <AtSign size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="email" value={manualTo} onChange={(e) => setManualTo(e.target.value)}
                   placeholder="recipient@company.com"
-                  className="w-full pl-9 pr-4 py-3 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white outline-none transition-all placeholder:text-gray-400" />
+                  className="w-full pl-9 pr-4 py-3 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] bg-white outline-none transition-all placeholder:text-gray-400" />
               </div>
             </div>
 
@@ -1185,21 +1185,21 @@ export default function EmailWriterModule({ userId, preloadedLead }: EmailWriter
               <label className="block text-sm font-semibold text-gray-800 mb-2">Subject</label>
               <input type="text" value={manualSubject} onChange={(e) => setManualSubject(e.target.value)}
                 placeholder="e.g. Quick question about your business"
-                className="w-full px-4 py-3 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white outline-none transition-all placeholder:text-gray-400" />
+                className="w-full px-4 py-3 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] bg-white outline-none transition-all placeholder:text-gray-400" />
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-gray-800 mb-2">Body</label>
               <textarea value={manualBody} onChange={(e) => setManualBody(e.target.value)} rows={14}
                 placeholder={"Hi,\n\nWrite your email here...\n\nBest,\nYour Name"}
-                className="w-full px-4 py-3 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white outline-none transition-all resize-none placeholder:text-gray-400"
+                className="w-full px-4 py-3 rounded-lg text-sm text-gray-900 border border-gray-300 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] bg-white outline-none transition-all resize-none placeholder:text-gray-400"
                 style={{ lineHeight: "1.7" }} />
             </div>
 
             <button onClick={sendManualCompose} disabled={isSendingManual || !manualTo || !manualSubject || !manualBody}
-              className="w-full py-4 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white bg-blue-600 hover:bg-blue-700">
+              className="w-full py-4 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-white bg-[#0084FF] hover:bg-[#0070d6]">
               {isSendingManual
-                ? <><Loader2 size={16} className="animate-spin" /> Sending…</>
+                ? <><Loader2 size={16} className="animate-spin" /> Sending�</>
                 : <><Send size={16} /> Send Email</>}
             </button>
           </div>

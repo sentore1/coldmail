@@ -249,7 +249,7 @@ export default function EmailVerificationModule({ userId }: EmailVerificationMod
             </div>
             <button
               onClick={filterLeadsByScore}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-[#0084FF] text-white rounded-lg text-sm font-medium hover:bg-[#0070d6] transition-colors flex items-center gap-2"
             >
               <Filter size={16} />
               Filter Leads
@@ -274,9 +274,9 @@ export default function EmailVerificationModule({ userId }: EmailVerificationMod
             </div>
             <p className="text-gray-900 font-medium text-base">No verification results yet</p>
             <p className="text-gray-500 text-sm mt-1">Click "Verify All Leads" to check email quality</p>
-            <div className="mt-6 max-w-2xl mx-auto text-left bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-blue-900 mb-2">How Email Verification Works:</h3>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="mt-6 max-w-2xl mx-auto text-left bg-[#e6f4ff] border border-[#99ceff] rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-[#003d80] mb-2">How Email Verification Works:</h3>
+              <ul className="text-sm text-[#005cb3] space-y-1">
                 <li>✓ <strong>Format Check:</strong> Validates email syntax</li>
                 <li>✓ <strong>DNS Verification:</strong> Checks if domain has mail servers</li>
                 <li>✓ <strong>Disposable Detection:</strong> Identifies temporary email services</li>
@@ -311,7 +311,7 @@ export default function EmailVerificationModule({ userId }: EmailVerificationMod
                         </span>
                       )}
                       {result.isDeliverable && (
-                        <span className="text-xs px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                        <span className="text-xs px-2 py-1 rounded-full bg-[#e6f4ff] text-[#0070d6] border border-[#99ceff]">
                           Deliverable
                         </span>
                       )}

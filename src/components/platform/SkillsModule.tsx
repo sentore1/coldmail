@@ -98,7 +98,7 @@ export default function SkillsModule() {
               onClick={() => setSelectedId(skill.id)}
               className={`mb-1.5 w-full rounded-md border px-3 py-2 text-left ${
                 selected?.id === skill.id
-                  ? "border-blue-200 bg-blue-50"
+                  ? "border-[#99ceff] bg-[#e6f4ff]"
                   : "border-transparent hover:bg-gray-50"
               }`}
             >
@@ -137,7 +137,7 @@ export default function SkillsModule() {
               <section className="grid gap-4 lg:grid-cols-2">
                 <div className="rounded-lg border border-gray-200 bg-white p-4">
                   <div className="mb-3 flex items-center gap-2">
-                    <BookOpen size={16} className="text-blue-600" />
+                    <BookOpen size={16} className="text-[#0084FF]" />
                     <h4 className="font-semibold text-gray-900">Rules</h4>
                   </div>
                   <div className="space-y-2">
@@ -166,7 +166,7 @@ export default function SkillsModule() {
 
               <section className="rounded-lg border border-gray-200 bg-white p-4">
                 <div className="mb-3 flex items-center gap-2">
-                  <Clock size={16} className="text-blue-600" />
+                  <Clock size={16} className="text-[#0084FF]" />
                   <h4 className="font-semibold text-gray-900">Recent Traces</h4>
                 </div>
                 {selectedTraces.length === 0 ? (

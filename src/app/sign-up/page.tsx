@@ -3,9 +3,9 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import Image from "next/image";
 import { signUpAction } from "@/lib/auth-actions";
 import { UrlProvider } from "@/components/url-provider";
-import { Zap } from "lucide-react";
 
 export default async function Signup(props: {
   searchParams: Promise<Message>;
@@ -22,11 +22,15 @@ export default async function Signup(props: {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-sm">
-        <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center">
-            <Zap size={17} className="text-white" />
-          </div>
-          <span className="text-lg font-bold text-gray-900">OUTREACH</span>
+        <div className="flex items-center justify-center mb-8">
+          <Image
+            src="/pryro-logo.png"
+            alt="Pryro Mail"
+            width={130}
+            height={40}
+            priority
+            className="h-10 w-auto"
+          />
         </div>
 
         <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">

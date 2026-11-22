@@ -253,6 +253,10 @@ const BLOCKED_DOMAINS = [
   'example.com','example.org','sentry.io','wixpress.com','squarespace.com',
   'wordpress.com','localhost','w3.org','schema.org','google.com','bing.com',
   'yahoo.com','duckduckgo.com',
+  // Booking / menu / link-in-bio — not company websites
+  'wa.me','api.whatsapp.com','setmore.com','menutigr.com','carrd.co',
+  'linktr.ee','linktree.com','beacons.ai','taplink.cc','readdy.link',
+  'readdy.ai','tripadvisor.com','booking.com','ubereats.com','doordash.com',
 ];
 const BLOCKED_PREFIXES = ['noreply','no-reply','donotreply','privacy','test','webmaster'];
 const BLOCKED_SUBSTRINGS = ['.png','.jpg','.jpeg','.gif','@2x','placeholder'];
@@ -370,7 +374,7 @@ export async function fetchEmailsFromSiteDetailed(
   // Discover dealer/find-us links from homepage (e.g. volkswagen.rw → /en/find-a-dealer.html)
   try {
     const homeUrl = `${new URL(normalized).origin}/`;
-    const homeRes = await fetch(homeUrl, { headers, signal: AbortSignal.timeout(12_000) });
+    const homeRes = await fetch(homeUrl, { headers, signal: AbortSignal.timeout(4_000) });
     if (homeRes.ok) {
       const homeHtml = await homeRes.text();
       for (const u of discoverContactLikeUrls(homeHtml, homeUrl)) {
@@ -386,7 +390,7 @@ export async function fetchEmailsFromSiteDetailed(
 
   const fetchOne = async (url: string) => {
     try {
-      const res = await fetch(url, { headers, signal: AbortSignal.timeout(12_000) });
+      const res = await fetch(url, { headers, signal: AbortSignal.timeout(4_000) });
       if (!res.ok) return;
       const html = await res.text();
       htmlByUrl.set(url, html);
@@ -399,7 +403,7 @@ export async function fetchEmailsFromSiteDetailed(
     }
   };
 
-  await Promise.all(Array.from(urls).slice(0, 24).map((url) => fetchOne(url)));
+  await Promise.all(Array.from(urls).slice(0, 10).map((url) => fetchOne(url)));
 
   const websitePuppeteerFallback = (): boolean => {
     const v = process.env.WEBSITE_FETCH_PUPPETEER?.trim().toLowerCase();

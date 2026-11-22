@@ -322,7 +322,7 @@ export async function verifySMTP(
  */
 async function isCatchAll(domain: string, mxHost: string): Promise<boolean> {
   const randomEmail = `xyzzy_${Math.random().toString(36).slice(2)}@${domain}`;
-  const result = await verifySMTP(randomEmail, mxHost, 6_000);
+  const result = await verifySMTP(randomEmail, mxHost, 2_500);
   return result.valid;
 }
 
@@ -425,10 +425,10 @@ export async function guessAndVerifyEmails(
     // SMTP verify each pattern — stop at first confirmed hit
     const results: GuessedEmail[] = [];
 
-    for (const email of guesses) {
+    for (const email of guesses.slice(0, 3)) {
       if (results.filter(r => r.verified).length >= maxGuesses) break;
       try {
-        const result = await verifySMTP(email, mxHost, 7_000);
+        const result = await verifySMTP(email, mxHost, 2_500);
         console.log(`    ⚡ SMTP ${email}: ${result.reason}`);
         if (result.valid) {
           results.push({ email, verified: true, catchAll: false, pattern: email.split('@')[0] });

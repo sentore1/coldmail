@@ -81,8 +81,8 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
       .order('created_at', { ascending: false });
     
     if (error) {
-      console.error('Error fetching campaigns:', error);
-      toast.error('Failed to load campaigns');
+      console.error('Error fetching campaigns:', error.code, error.message, error.details, error.hint);
+      toast.error(`Failed to load campaigns: ${error.message ?? 'unknown error'}`);
     } else {
       setCampaigns(data || []);
     }
@@ -197,8 +197,8 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'draft': return 'bg-gray-100 text-gray-700';
-      case 'scheduled': return 'bg-blue-100 text-blue-700';
-      case 'active': return 'bg-blue-600 text-white';
+      case 'scheduled': return 'bg-[#cce9ff] text-[#0070d6]';
+      case 'active': return 'bg-[#0084FF] text-white';
       case 'paused': return 'bg-gray-200 text-gray-700';
       case 'completed': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
@@ -235,7 +235,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <Loader2 size={32} className="animate-spin text-blue-600" />
+        <Loader2 size={32} className="animate-spin text-[#0084FF]" />
       </div>
     );
   }
@@ -247,7 +247,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-              <Megaphone size={28} className="text-blue-600" />
+              <Megaphone size={28} className="text-[#0084FF]" />
               Email Campaigns
             </h1>
             <p className="text-sm text-gray-500 mt-1">
@@ -256,7 +256,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#0084FF] text-white rounded-lg text-sm font-medium hover:bg-[#0070d6] transition-colors"
           >
             <Plus size={18} />
             New Campaign
@@ -287,7 +287,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
       </div>
 
       {/* Campaigns List */}
-      <div className="flex-1 overflow-y-auto px-8 py-6">
+      <div className="flex-1 overflow-y-auto px-8 py-6" style={{ backgroundImage: "radial-gradient(circle, #d1d5db 1px, transparent 1px)", backgroundSize: "20px 20px" }}>
         {campaigns.length === 0 ? (
           <div className="text-center py-16">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -297,7 +297,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
             <p className="text-gray-500 text-sm mt-1">Create your first email campaign to get started</p>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="mt-4 px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
+              className="mt-4 px-5 py-2.5 bg-[#0084FF] text-white rounded-lg text-sm font-medium hover:bg-[#0070d6] transition-colors inline-flex items-center gap-2"
             >
               <Plus size={18} />
               Create Campaign
@@ -322,7 +322,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                             {campaign.status.toUpperCase()}
                           </span>
                           {campaign.niche && (
-                            <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                            <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-[#e6f4ff] text-[#0070d6]">
                               {campaign.niche}
                             </span>
                           )}
@@ -434,7 +434,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                   value={campaignName}
                   onChange={(e) => setCampaignName(e.target.value)}
                   placeholder="e.g., Rwanda Clinics Outreach Q1"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all"
                 />
               </div>
 
@@ -445,7 +445,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                   onChange={(e) => setCampaignDescription(e.target.value)}
                   placeholder="Brief description of this campaign..."
                   rows={2}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all resize-none"
                 />
               </div>
 
@@ -456,7 +456,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                   value={selectedNiche}
                   onChange={(e) => setSelectedNiche(e.target.value)}
                   placeholder="e.g., Healthcare, Education, etc."
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all"
                 />
               </div>
 
@@ -467,7 +467,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                   value={templateSubject}
                   onChange={(e) => setTemplateSubject(e.target.value)}
                   placeholder="Subject line for your emails"
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all"
                 />
               </div>
 
@@ -478,7 +478,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                   onChange={(e) => setTemplateBody(e.target.value)}
                   placeholder="Your email content... Use {{company_name}}, {{location}}, etc. for personalization"
                   rows={8}
-                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none font-mono text-sm"
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all resize-none font-mono text-sm"
                 />
               </div>
 
@@ -489,7 +489,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                     type="date"
                     value={scheduledDate}
                     onChange={(e) => setScheduledDate(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -498,7 +498,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                     type="time"
                     value={scheduledTime}
                     onChange={(e) => setScheduledTime(e.target.value)}
-                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 outline-none transition-all"
+                    className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#3399ff] focus:ring-2 focus:ring-[#cce9ff] outline-none transition-all"
                   />
                 </div>
               </div>
@@ -513,7 +513,7 @@ export default function CampaignsModule({ userId }: CampaignsModuleProps) {
                 <button
                   onClick={createCampaign}
                   disabled={isCreating}
-                  className="flex-1 px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 px-5 py-2.5 bg-[#0084FF] text-white rounded-lg font-medium hover:bg-[#0070d6] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isCreating ? (
                     <>

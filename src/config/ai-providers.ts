@@ -3,12 +3,15 @@
  * Model IDs are loaded live from each provider API when a key is connected;
  * `fallbackModels` is used only if the models API fails.
  */
+import { Zap, Circle, Feather, Gem, Triangle } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
 export interface AIProviderDefinition {
   key: string;
   name: string;
   color: string;
   fallbackModels: string[];
-  icon: string;
+  icon: LucideIcon;
   tagline: string;
   /** Whether this provider exposes a /models (or equivalent) list API */
   supportsLiveModels: boolean;
@@ -25,7 +28,7 @@ export const AI_PROVIDER_DEFINITIONS: AIProviderDefinition[] = [
       "openai/gpt-oss-120b",
       "openai/gpt-oss-20b",
     ],
-    icon: "⚡",
+    icon: Zap,
     tagline: "Fastest inference engine",
     supportsLiveModels: true,
   },
@@ -34,7 +37,7 @@ export const AI_PROVIDER_DEFINITIONS: AIProviderDefinition[] = [
     name: "OpenAI",
     color: "#2563EB",
     fallbackModels: ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo"],
-    icon: "◎",
+    icon: Circle,
     tagline: "Most capable models",
     supportsLiveModels: true,
   },
@@ -47,7 +50,7 @@ export const AI_PROVIDER_DEFINITIONS: AIProviderDefinition[] = [
       "claude-3-5-haiku-20241022",
       "claude-3-opus-20240229",
     ],
-    icon: "Ⲁ",
+    icon: Feather,
     tagline: "Best for nuanced writing",
     supportsLiveModels: true,
   },
@@ -56,7 +59,7 @@ export const AI_PROVIDER_DEFINITIONS: AIProviderDefinition[] = [
     name: "Google Gemini",
     color: "#2563EB",
     fallbackModels: ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.0-flash"],
-    icon: "◆",
+    icon: Gem,
     tagline: "Multimodal intelligence",
     supportsLiveModels: true,
   },
@@ -69,7 +72,7 @@ export const AI_PROVIDER_DEFINITIONS: AIProviderDefinition[] = [
       "mistral-small-latest",
       "open-mixtral-8x7b",
     ],
-    icon: "▲",
+    icon: Triangle,
     tagline: "European open AI",
     supportsLiveModels: true,
   },

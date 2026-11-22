@@ -118,7 +118,7 @@ export function NotificationsBell({ userId }: NotificationsPanelProps) {
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllRead}
-                    className="text-[10px] text-blue-600 hover:text-blue-700 font-medium px-2 py-1 rounded hover:bg-blue-50"
+                    className="text-[10px] text-[#0084FF] hover:text-[#0070d6] font-medium px-2 py-1 rounded hover:bg-[#e6f4ff]"
                   >
                     Mark all read
                   </button>
@@ -147,7 +147,7 @@ export function NotificationsBell({ userId }: NotificationsPanelProps) {
                   return (
                     <div
                       key={notif.id}
-                      className={`flex items-start gap-3 px-4 py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${!notif.is_read ? 'bg-blue-50/30' : ''}`}
+                      className={`flex items-start gap-3 px-4 py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${!notif.is_read ? 'bg-[#e6f4ff]/30' : ''}`}
                       onClick={() => !notif.is_read && markRead(notif.id)}
                     >
                       <div
@@ -160,7 +160,7 @@ export function NotificationsBell({ userId }: NotificationsPanelProps) {
                         <div className="flex items-center justify-between gap-2">
                           <p className="text-xs font-semibold text-gray-900 truncate">{notif.title}</p>
                           {!notif.is_read && (
-                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#0084FF] flex-shrink-0" />
                           )}
                         </div>
                         <p className="text-[11px] text-gray-500 mt-0.5 line-clamp-2">{notif.message}</p>

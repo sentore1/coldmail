@@ -140,7 +140,7 @@ async function layerGuesser(
     const guesses = await guessAndVerifyEmails(domain, {
       companyName,
       maxGuesses: 4,
-      smtpVerify: true,
+      smtpVerify: process.env.SMTP_VERIFY !== "false",
     });
     if (guesses.length > 0 && guesses[0].email) {
       return [{ email: guesses[0].email.toLowerCase(), source: 'guessed' }];

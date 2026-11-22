@@ -13,19 +13,8 @@ const CONTACT_PATHS = [
   '/fr/contact',
   '/get-in-touch',
   '/reach-us',
-  '/kontakt',
-  '/contacto',
   '/about',
   '/about-us',
-  '/find-us',
-  '/find-a-dealer',
-  '/find-a-dealer.html',
-  '/en/find-us',
-  '/en/find-a-dealer',
-  '/en/find-a-dealer.html',
-  '/dealer-locator',
-  '/dealers',
-  '/locations',
   '/imprint',
   '/legal',
 ];
@@ -121,7 +110,7 @@ export async function discoverSitemapContactUrls(
   try {
     const res = await fetch(sitemapUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PryroScraper/1.0)' },
-      signal: AbortSignal.timeout(8_000),
+      signal: AbortSignal.timeout(4_000),
     });
     if (!res.ok) return [];
     const xml = await res.text();

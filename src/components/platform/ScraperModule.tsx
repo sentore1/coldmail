@@ -869,9 +869,9 @@ export default function ScraperModule({
           <button
             key={id}
             onClick={() => setActiveTab(id)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-t-lg transition-colors ${
               activeTab === id
-                ? "bg-blue-50 text-blue-700 border border-b-0 border-blue-200"
+                ? "bg-[#0084FF] text-white border border-b-0 border-[#0070d6] shadow-sm"
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
@@ -886,7 +886,7 @@ export default function ScraperModule({
         <div className="flex flex-col gap-4">
           <div className="rounded-xl p-6 bg-white border border-gray-200 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
-              <FileText size={15} className="text-blue-600" />
+              <FileText size={15} className="text-[#0084FF]" />
               <span className="text-sm font-semibold text-gray-900">Import Leads from CSV</span>
             </div>
             <p className="text-xs text-gray-500 mb-4">
@@ -914,7 +914,7 @@ export default function ScraperModule({
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={csvImporting}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#0084FF] text-white hover:bg-[#0070d6] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {csvImporting ? (
                 <><Loader2 size={14} className="animate-spin" />Importing…</>
@@ -932,7 +932,7 @@ export default function ScraperModule({
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                   csvJob.status === "completed" ? "bg-green-100 text-green-700" :
                   csvJob.status === "failed" ? "bg-red-100 text-red-700" :
-                  "bg-blue-100 text-blue-700"
+                  "bg-[#cce9ff] text-[#0070d6]"
                 }`}>
                   {csvJob.status.toUpperCase()}
                 </span>
@@ -941,7 +941,7 @@ export default function ScraperModule({
               {/* Progress bar */}
               <div className="w-full bg-gray-100 rounded-full h-2 mb-3">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                  className="bg-[#0084FF] h-2 rounded-full transition-all duration-500"
                   style={{
                     width: `${csvJob.totalChunks > 0
                       ? Math.round((csvJob.currentChunk / csvJob.totalChunks) * 100)
@@ -975,7 +975,7 @@ export default function ScraperModule({
       {/* ── Search Panel ─────────────────────────────────────────────── */}
       <div className="rounded-xl p-5 bg-white border border-gray-200 shadow-sm">
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <Radio size={15} className="text-blue-600" />
+          <Radio size={15} className="text-[#0070d6]" />
           <span className="text-sm font-semibold text-gray-900">Lead Scraper</span>
           <div className="ml-auto flex items-center gap-2 flex-wrap justify-end">
             {mapsBackendLoading ? (
@@ -1019,7 +1019,7 @@ export default function ScraperModule({
               <button
                 type="button"
                 onClick={onOpenAiSettings}
-                className="flex items-center gap-1 text-[10px] font-medium text-blue-600 hover:text-blue-800"
+                className="flex items-center gap-1 text-[10px] font-medium text-[#0084FF] hover:text-[#005cb3]"
               >
                 <Settings size={11} />
                 AI Settings
@@ -1042,7 +1042,7 @@ export default function ScraperModule({
                   value={row.niche}
                   onChange={(e) => handleNicheInput(row.id, e.target.value)}
                   onFocus={() => setSuggestionRowId(row.id)}
-                  className="w-full pl-9 pr-3 py-2.5 rounded-lg text-sm border border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-lg text-sm border border-gray-300 text-gray-900 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] outline-none"
                 />
                 {suggestionRowId === row.id && nicheSuggestions.length > 0 && (
                   <div className="absolute top-full mt-1 left-0 right-0 bg-white rounded-lg z-20 shadow-lg border border-gray-200 overflow-hidden">
@@ -1050,7 +1050,7 @@ export default function ScraperModule({
                       <button
                         key={s}
                         type="button"
-                        className="w-full text-left px-3 py-2 text-xs hover:bg-blue-50 text-gray-700"
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-[#e6f4ff] text-gray-700"
                         onClick={() => {
                           updateSearchRow(row.id, { niche: s });
                           setNicheSuggestions([]);
@@ -1075,7 +1075,7 @@ export default function ScraperModule({
                   onChange={(e) =>
                     updateSearchRow(row.id, { location: e.target.value })
                   }
-                  className="w-full pl-9 pr-3 py-2.5 rounded-lg text-sm border border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-lg text-sm border border-gray-300 text-gray-900 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] outline-none"
                 />
               </div>
 
@@ -1101,7 +1101,7 @@ export default function ScraperModule({
             type="button"
             onClick={addSearchRow}
             disabled={isScraping || isScrapeAndGenerate}
-            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium border border-dashed border-gray-300 text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50/50 disabled:opacity-40 shrink-0"
+            className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-sm font-medium border border-dashed border-gray-300 text-gray-600 hover:border-[#0084FF] hover:text-[#0084FF] hover:bg-[#e6f4ff]/50 disabled:opacity-40 shrink-0"
           >
             <Plus size={16} />
             Add search
@@ -1111,7 +1111,7 @@ export default function ScraperModule({
           <select
             value={maxResults}
             onChange={(e) => setMaxResults(Number(e.target.value))}
-            className="px-3 py-2.5 rounded-lg text-sm border border-gray-300 text-gray-900 focus:border-blue-500 outline-none bg-white"
+            className="px-3 py-2.5 rounded-lg text-sm border border-gray-300 text-gray-900 focus:border-[#0084FF] outline-none bg-white"
           >
             <option value={25}>25 leads</option>
             <option value={50}>50 leads</option>
@@ -1125,7 +1125,7 @@ export default function ScraperModule({
           <button
             onClick={handleScrape}
             disabled={isScraping || isScrapeAndGenerate}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#0084FF] text-white hover:bg-[#0070d6] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isScraping
               ? <><Loader2 size={14} className="animate-spin" />Scraping...</>
@@ -1137,7 +1137,7 @@ export default function ScraperModule({
           <button
             onClick={handleScrapeAndGenerate}
             disabled={isScraping || isScrapeAndGenerate}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold bg-[#0084FF] text-white hover:bg-[#0070d6] disabled:opacity-50 disabled:cursor-not-allowed"
             title="Scrape leads AND generate AI emails in one click"
           >
             {isScrapeAndGenerate
@@ -1149,7 +1149,7 @@ export default function ScraperModule({
         </div>
 
         {(isScraping || isScrapeAndGenerate) && (
-          <p className="text-xs text-blue-600 mt-3 flex items-center gap-2 flex-wrap">
+          <p className="text-xs text-[#0084FF] mt-3 flex items-center gap-2 flex-wrap">
             <Loader2 size={11} className="animate-spin shrink-0" />
             {multiQueryProgress && multiQueryProgress.total > 1 && (
               <span className="font-medium">
@@ -1174,10 +1174,10 @@ export default function ScraperModule({
 
       {/* ── Chunk Progress Panel ─────────────────────────────────────── */}
       {(isScraping || isScrapeAndGenerate || (progress && results.length > 0)) && (
-        <div className="rounded-xl p-4 bg-white border border-blue-200 shadow-sm">
+        <div className="rounded-xl p-4 bg-white border border-[#99ceff] shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <BarChart2 size={14} className="text-blue-600" />
+              <BarChart2 size={14} className="text-[#0084FF]" />
               <span className="text-sm font-semibold text-gray-900">Scrape Progress</span>
             </div>
             {progress && (
@@ -1190,13 +1190,13 @@ export default function ScraperModule({
           {/* Overall progress bar */}
           <div className="w-full bg-gray-100 rounded-full h-2 mb-3">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="bg-[#0084FF] h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress?.percentComplete ?? 0}%` }}
             />
           </div>
 
           {scrapeSummary && !isScraping && (
-            <p className="text-xs text-gray-600 mb-3 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+            <p className="text-xs text-gray-600 mb-3 bg-[#e6f4ff] border border-[#cce9ff] rounded-lg px-3 py-2">
               <strong>Run summary:</strong> {scrapeSummary.withEmail} scraped with email (
               {scrapeSummary.realEmails} from website crawl) · {scrapeSummary.crmAdded}{" "}
               saved to CRM · {scrapeSummary.researched} researched
@@ -1212,7 +1212,7 @@ export default function ScraperModule({
           {/* Stats row */}
           <div className="grid grid-cols-4 gap-2 mb-3">
             {[
-              { label: "Scraped", value: progress?.totalFound ?? results.length, color: "text-blue-600" },
+              { label: "Scraped", value: progress?.totalFound ?? results.length, color: "text-[#0084FF]" },
               { label: "Round", value: progress ? `${progress.currentChunk}/${progress.totalChunks}` : "—" },
               { label: "Failed", value: progress?.totalFailed ?? 0, color: "text-red-500" },
               { label: "Remaining", value: progress?.remaining ?? "…", color: "text-orange-500" },
@@ -1235,7 +1235,7 @@ export default function ScraperModule({
                       ? "bg-green-50 border-green-200 text-green-700"
                       : c.status === "empty"
                         ? "bg-amber-50 border-amber-200 text-amber-700"
-                        : "bg-blue-50 border-blue-200 text-blue-700"
+                        : "bg-[#e6f4ff] border-[#99ceff] text-[#0070d6]"
                   }`}
                 >
                   {c.status === "done" ? (
@@ -1263,13 +1263,13 @@ export default function ScraperModule({
 
       {/* ── Pipeline progress panel (Scrape + Generate mode) ─────────── */}
       {(isScrapeAndGenerate || pipelinePhase === "done") && (
-        <div className="rounded-xl p-4 bg-white border border-blue-200 shadow-sm">
+        <div className="rounded-xl p-4 bg-white border border-[#99ceff] shadow-sm">
           <div className="flex items-center gap-2 mb-3">
-            <Zap size={14} className="text-blue-600" />
+            <Zap size={14} className="text-[#0084FF]" />
             <span className="text-sm font-semibold text-gray-900">Scrape + AI Email Pipeline</span>
             <span className={`ml-auto text-xs px-2 py-0.5 rounded-full font-medium ${
-              pipelinePhase === "scraping"   ? "bg-blue-100 text-blue-700" :
-              pipelinePhase === "generating" ? "bg-blue-100 text-blue-700" :
+              pipelinePhase === "scraping"   ? "bg-[#cce9ff] text-[#0070d6]" :
+              pipelinePhase === "generating" ? "bg-[#cce9ff] text-[#0070d6]" :
               pipelinePhase === "done"       ? "bg-green-100 text-green-700" :
               "bg-gray-100 text-gray-500"
             }`}>
@@ -1282,7 +1282,7 @@ export default function ScraperModule({
           {/* Phase indicators */}
           <div className="flex items-center gap-2 mb-3">
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border ${
-              pipelinePhase === "scraping" ? "bg-blue-50 border-blue-200 text-blue-700" :
+              pipelinePhase === "scraping" ? "bg-[#e6f4ff] border-[#99ceff] text-[#0070d6]" :
               pipelinePhase !== "idle"     ? "bg-green-50 border-green-200 text-green-700" :
               "bg-gray-50 border-gray-200 text-gray-400"
             }`}>
@@ -1293,7 +1293,7 @@ export default function ScraperModule({
             </div>
             <div className="text-gray-300 text-xs">→</div>
             <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border ${
-              pipelinePhase === "generating" ? "bg-blue-50 border-blue-200 text-blue-700" :
+              pipelinePhase === "generating" ? "bg-[#e6f4ff] border-[#99ceff] text-[#0070d6]" :
               pipelinePhase === "done"       ? "bg-green-50 border-green-200 text-green-700" :
               "bg-gray-50 border-gray-200 text-gray-400"
             }`}>
@@ -1309,8 +1309,8 @@ export default function ScraperModule({
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: "Leads Scraped", value: pipelineStats.scraped, color: "text-blue-600" },
-              { label: "Emails Generated", value: pipelineStats.emails, color: "text-blue-600" },
+              { label: "Leads Scraped", value: pipelineStats.scraped, color: "text-[#0084FF]" },
+              { label: "Emails Generated", value: pipelineStats.emails, color: "text-[#0084FF]" },
               { label: "Fallbacks", value: pipelineStats.fallbacks, color: "text-orange-500" },
             ].map((s) => (
               <div key={s.label} className="bg-gray-50 rounded-lg p-2 border border-gray-100 text-center">
@@ -1324,12 +1324,12 @@ export default function ScraperModule({
           {generatedEmails.length > 0 && (
             <div className="mt-3 max-h-48 overflow-y-auto flex flex-col gap-2">
               {generatedEmails.map((e, i) => (
-                <div key={i} className={`rounded-lg p-3 border text-xs ${e.isFallback ? "bg-orange-50 border-orange-200" : "bg-blue-50 border-blue-200"}`}>
+                <div key={i} className={`rounded-lg p-3 border text-xs ${e.isFallback ? "bg-orange-50 border-orange-200" : "bg-[#e6f4ff] border-[#99ceff]"}`}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-semibold text-gray-800 truncate">{e.company_name}</span>
                     {e.isFallback
                       ? <span className="text-orange-500 text-[10px] shrink-0 ml-2">fallback</span>
-                      : <span className="text-blue-600 text-[10px] shrink-0 ml-2">✓ AI</span>
+                      : <span className="text-[#0084FF] text-[10px] shrink-0 ml-2">✓ AI</span>
                     }
                   </div>
                   <p className="text-gray-500 truncate">📧 {e.lead_email}</p>
@@ -1348,11 +1348,11 @@ export default function ScraperModule({
             <span className="text-sm font-bold text-gray-900">
               {results.length} leads {isScraping ? "found so far…" : "found"}
             </span>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">
+            <span className="text-xs px-2 py-0.5 rounded-full bg-green-600 text-white font-semibold">
               ✓ {realCount} verified
             </span>
             {guessedCount > 0 && (
-              <span className="text-xs px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700 font-medium">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500 text-white font-semibold">
                 ~ {guessedCount} guessed
               </span>
             )}
@@ -1394,8 +1394,8 @@ export default function ScraperModule({
 
       {/* ── Bulk action bar (when rows selected) ─────────────────────── */}
       {selected.size > 0 && (
-        <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-200">
-          <span className="text-sm text-blue-700 font-medium">{selected.size} selected</span>
+        <div className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-[#e6f4ff] border border-[#99ceff]">
+          <span className="text-sm text-[#0070d6] font-medium">{selected.size} selected</span>
           <div className="flex items-center gap-2">
             <button
               onClick={() => addToCRM(selectedLeads)}
@@ -1407,7 +1407,7 @@ export default function ScraperModule({
             </button>
             <button
               onClick={() => onGenerateEmails?.(selectedLeads)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-100 border border-blue-300 text-blue-700 hover:bg-blue-200"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#cce9ff] border border-[#66b8ff] text-[#0070d6] hover:bg-[#b3d9ff]"
             >
               <Mail size={11} />Write Emails
             </button>
@@ -1434,7 +1434,7 @@ export default function ScraperModule({
                   <th className="px-4 py-3 w-10">
                     <button onClick={toggleAll}>
                       {results.every((_, i) => selected.has(i))
-                        ? <CheckSquare size={13} className="text-blue-600" />
+                        ? <CheckSquare size={13} className="text-[#0084FF]" />
                         : <Square size={13} className="text-gray-400" />
                       }
                     </button>
@@ -1453,12 +1453,12 @@ export default function ScraperModule({
                   return (
                     <tr
                       key={i}
-                      className={`border-b border-gray-100 hover:bg-blue-50 group transition-colors ${isSelected ? "bg-blue-50" : ""}`}
+                      className={`border-b border-gray-100 hover:bg-[#e6f4ff] group transition-colors ${isSelected ? "bg-[#e6f4ff]" : ""}`}
                     >
                       <td className="px-4 py-3">
                         <button onClick={() => toggleRow(i)}>
                           {isSelected
-                            ? <CheckSquare size={13} className="text-blue-600" />
+                            ? <CheckSquare size={13} className="text-[#0084FF]" />
                             : <Square size={13} className="text-gray-400" />
                           }
                         </button>
@@ -1469,15 +1469,15 @@ export default function ScraperModule({
                       <td className="px-4 py-3">
                         {lead.email ? (
                           <div className="flex items-center gap-1.5">
-                            <span className={`text-xs font-mono ${isReal ? "text-blue-600" : "text-amber-600"}`}>
+                            <span className={`text-xs font-mono ${isReal ? "text-[#0084FF]" : "text-amber-600"}`}>
                               {lead.email}
                             </span>
                             {isReal ? (
-                              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200 font-semibold">
+                              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-600 text-white font-semibold">
                                 ✓ REAL
                               </span>
                             ) : (
-                              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-600 border border-amber-200 font-semibold">
+                              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-500 text-white font-semibold">
                                 ~ GUESS
                               </span>
                             )}
@@ -1544,7 +1544,7 @@ export default function ScraperModule({
               {noEmailCount > 0 && <> · <span className="text-orange-400">{noEmailCount} no email</span></>}
             </span>
             {selected.size > 0 && (
-              <span className="text-[10px] text-blue-600 font-medium">{selected.size} selected</span>
+              <span className="text-[10px] text-[#0084FF] font-medium">{selected.size} selected</span>
             )}
           </div>
         </div>
@@ -1552,10 +1552,13 @@ export default function ScraperModule({
 
       {/* ── Empty state ───────────────────────────────────────────────── */}
       {results.length === 0 && !isScraping && (
-        <div className="flex-1 flex items-center justify-center">
+        <div
+          className="flex-1 flex items-center justify-center"
+          style={{ backgroundImage: "radial-gradient(circle, #d1d5db 1px, transparent 1px)", backgroundSize: "20px 20px" }}
+        >
           <div className="text-center">
-            <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-blue-50 border border-blue-100">
-              <Radio size={24} className="text-blue-600" />
+            <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center bg-[#0084FF] border border-[#0070d6] shadow-md">
+              <Radio size={24} className="text-white" />
             </div>
             <p className="text-sm font-medium text-gray-700">Add niche + location rows, then scrape</p>
             <p className="text-xs mt-1 text-gray-500">
@@ -1587,10 +1590,10 @@ export default function ScraperModule({
               <div className="rounded-xl p-4 bg-gray-50 border border-gray-200 flex flex-col gap-2">
                 {drawerLead.email && (
                   <div className="flex items-center gap-2">
-                    <Mail size={13} className="text-blue-500 flex-shrink-0" />
-                    <span className="text-sm text-blue-600 font-mono break-all">{drawerLead.email}</span>
+                    <Mail size={13} className="text-[#0084FF] flex-shrink-0" />
+                    <span className="text-sm text-[#0084FF] font-mono break-all">{drawerLead.email}</span>
                     {(drawerLead as any).emailIsReal && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200 font-semibold flex-shrink-0">REAL</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-green-600 text-white font-semibold flex-shrink-0">REAL</span>
                     )}
                   </div>
                 )}
@@ -1607,7 +1610,7 @@ export default function ScraperModule({
                       href={(drawerLead as any).website}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-blue-500 hover:underline truncate"
+                      className="text-sm text-[#0084FF] hover:underline truncate"
                     >
                       {(drawerLead as any).website}
                     </a>
@@ -1649,7 +1652,7 @@ export default function ScraperModule({
               )}
               <button
                 onClick={() => { onGenerateEmails?.([drawerLead]); setDrawerLead(null); }}
-                className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 bg-blue-50 border border-blue-300 text-blue-700 hover:bg-blue-100"
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 bg-[#e6f4ff] border border-[#66b8ff] text-[#0070d6] hover:bg-[#cce9ff]"
               >
                 <Mail size={13} />Write Email
               </button>

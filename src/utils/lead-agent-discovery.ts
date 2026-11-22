@@ -1,7 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
-  fetchGoogleHtml,
-  parseGoogleHits,
+  fetchBingHtml,
+  parseBingHits,
+  fetchDdgHtml,
+  parseDdgHits,
+  buildBingQueries,
+  buildDdgQueries,
   type SearchHit,
 } from "@/utils/search-engine-fetch";
 import { enqueueAutomationJob } from "@/utils/automation-queue";
@@ -44,35 +48,40 @@ function titleToCompany(title: string): string {
   ).slice(0, 140);
 }
 
-function discoveryQueries(niche: string, location: string, maxResults: number): string[] {
-  const loc = cleanText(location);
-  const base = cleanText(niche);
-  return Array.from(
-    new Set([
-      `${base}${loc ? ` ${loc}` : ""} official website`,
-      `${base}${loc ? ` ${loc}` : ""} contact email phone`,
-      `${base}${loc ? ` ${loc}` : ""} businesses`,
-      maxResults > 50 ? `${base}${loc ? ` ${loc}` : ""} directory contact` : "",
-    ].filter(Boolean))
-  );
+function discoveryQueries(niche: string, location: string): string[] {
+  // Use the same query builders as puppeteer-scraper (Bing + DDG aware)
+  const bing = buildBingQueries(niche, location);
+  const ddg = buildDdgQueries(niche, location);
+  // Merge deduplicated
+  return Array.from(new Set([...bing, ...ddg]));
 }
 
-async function searchWeb(query: string): Promise<SearchHit[]> {
+async function searchWeb(query: string, location: string): Promise<SearchHit[]> {
+  // Try Bing first (most reliable without API key)
   try {
-    const google = await fetchGoogleHtml(query, "");
-    const hits = parseGoogleHits(google.html, 10);
-    console.log(
-      `[lead-agent] discover searchWeb google: "${query}" -> ${hits.length} hit(s) via ${google.via}`
-    );
-    return hits;
-  } catch (error) {
-    console.warn(
-      `[lead-agent] discover searchWeb google failed: "${query}" -> ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
-    return [];
+    const { html, via } = await fetchBingHtml(query, location);
+    const hits = parseBingHits(html, 10);
+    if (hits.length > 0) {
+      console.log(`[lead-agent] bing: "${query}" -> ${hits.length} hit(s) via ${via}`);
+      return hits;
+    }
+  } catch (err) {
+    console.warn(`[lead-agent] bing failed: ${err instanceof Error ? err.message : String(err)}`);
   }
+
+  // Fall back to DDG
+  try {
+    const result = await fetchDdgHtml(query);
+    if (!result.blocked) {
+      const hits = parseDdgHits(result.html, result.via);
+      console.log(`[lead-agent] ddg: "${query}" -> ${hits.length} hit(s) via ${result.via}`);
+      return hits;
+    }
+  } catch (err) {
+    console.warn(`[lead-agent] ddg failed: ${err instanceof Error ? err.message : String(err)}`);
+  }
+
+  return [];
 }
 
 export async function runAgentDiscovery(
@@ -98,9 +107,9 @@ export async function runAgentDiscovery(
   }> = [];
 
   console.log(`[lead-agent] discover start: ${niche}${location ? ` in ${location}` : ""}`);
-  for (const query of discoveryQueries(niche, location, maxResults)) {
+  for (const query of discoveryQueries(niche, location)) {
     console.log(`[lead-agent] discover searchWeb: ${query}`);
-    const hits = await searchWeb(query);
+    const hits = await searchWeb(query, location);
     for (const hit of hits) {
       if (candidates.length >= maxResults) break;
       const company = titleToCompany(hit.title);

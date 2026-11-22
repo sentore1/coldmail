@@ -207,8 +207,8 @@ export default function CSVImportModal({ userId, onClose, onImported }: CSVImpor
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-              <Upload size={15} className="text-blue-600" />
+            <div className="w-8 h-8 rounded-lg bg-[#e6f4ff] flex items-center justify-center">
+              <Upload size={15} className="text-[#0084FF]" />
             </div>
             <div>
               <h2 className="text-base font-bold text-gray-900">Import Leads from CSV</h2>
@@ -280,8 +280,8 @@ export default function CSVImportModal({ userId, onClose, onImported }: CSVImpor
                 className="hidden"
                 onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
               />
-              <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                <FileText size={28} className="text-blue-600" />
+              <div className="w-16 h-16 rounded-2xl bg-[#e6f4ff] flex items-center justify-center mx-auto mb-4">
+                <FileText size={28} className="text-[#0084FF]" />
               </div>
               <p className="text-base font-semibold text-gray-900 mb-1">
                 Drop your CSV file here
@@ -345,7 +345,7 @@ export default function CSVImportModal({ userId, onClose, onImported }: CSVImpor
                             <select
                               value={mappedField}
                               onChange={e => setColumnField(idx, e.target.value)}
-                              className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full max-w-[200px]"
+                              className="text-xs border border-gray-300 rounded-lg px-2 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0084FF] w-full max-w-[200px]"
                             >
                               {FIELD_OPTIONS.map(opt => (
                                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -400,8 +400,8 @@ export default function CSVImportModal({ userId, onClose, onImported }: CSVImpor
           {/* Step 3: Importing */}
           {step === 'importing' && (
             <div className="flex flex-col items-center justify-center py-16 gap-4">
-              <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center">
-                <Loader2 size={28} className="text-blue-600 animate-spin" />
+              <div className="w-16 h-16 rounded-2xl bg-[#e6f4ff] flex items-center justify-center">
+                <Loader2 size={28} className="text-[#0084FF] animate-spin" />
               </div>
               <div className="text-center">
                 <p className="text-base font-semibold text-gray-900">Importing leads...</p>
@@ -481,7 +481,7 @@ export default function CSVImportModal({ userId, onClose, onImported }: CSVImpor
             <button
               onClick={handleImport}
               disabled={!mapping.company_name && !mapping.email}
-              className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-2 px-5 py-2 bg-[#0084FF] text-white text-sm font-semibold rounded-lg hover:bg-[#0070d6] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <Upload size={14} />
               Import Leads

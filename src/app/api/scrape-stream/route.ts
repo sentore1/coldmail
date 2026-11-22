@@ -1,9 +1,14 @@
 import { NextRequest } from "next/server";
 import { createClient } from "../../../../supabase/server";
 import { createServiceClient } from "../../../../supabase/service";
-import { enqueueAutomationJob } from "@/utils/automation-queue";
+import { scrapeWithoutAPI } from "@/utils/puppeteer-scraper";
+import { insertScrapedLeadsToCrm } from "@/utils/scrape-lead-crm";
+import { loadAIProviderForUser } from "@/utils/load-ai-provider-server";
+import type { ScrapedLead } from "@/types/platform";
+import type { AIProviderConfig } from "@/utils/ai-scraper-helper";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -11,6 +16,7 @@ export async function POST(request: NextRequest) {
     data: { user },
     error: authError,
   } = await supabase.auth.getUser();
+
   if (authError || !user) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
   }
@@ -20,64 +26,122 @@ export async function POST(request: NextRequest) {
     location?: string;
     maxResults?: number;
   };
+
   if (!niche?.trim()) {
     return new Response(JSON.stringify({ error: "Niche is required" }), { status: 400 });
   }
 
+  const cappedMax = Math.max(1, Math.min(Number(maxResults ?? 100), 500));
+  const nicheClean = niche.trim();
+  const locationClean = location?.trim() ?? "";
+
   const service = createServiceClient();
-  const jobId = await enqueueAutomationJob(service, user.id, "agent_discover", {
-    niche: niche.trim(),
-    location: location?.trim() ?? "",
-    maxResults: Math.max(1, Math.min(Number(maxResults ?? 25), 100)),
-  });
+  const aiProvider = await loadAIProviderForUser(service, user.id) as AIProviderConfig | null;
+
+  const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
-    start(controller) {
-      const enc = new TextEncoder();
+    async start(controller) {
       const send = (event: string, data: object) => {
-        controller.enqueue(enc.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`));
+        try {
+          controller.enqueue(
+            encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)
+          );
+        } catch {
+          /* client disconnected */
+        }
       };
+
       send("start", {
-        jobId,
-        niche: niche.trim(),
-        location: location?.trim() ?? "",
-        maxResults: Math.max(1, Math.min(Number(maxResults ?? 25), 100)),
-        mode: "agent_queued",
+        niche: nicheClean,
+        location: locationClean,
+        maxResults: cappedMax,
+        mode: "live",
       });
-      send("progress", {
-        totalFound: 0,
-        totalFailed: 0,
-        remaining: Math.max(1, Math.min(Number(maxResults ?? 25), 100)),
-        currentChunk: 1,
-        totalChunks: 1,
-        percentComplete: 100,
-        phase: "queued_for_worker",
-      });
-      send("done", {
-        jobId,
-        total: 0,
-        target: Math.max(1, Math.min(Number(maxResults ?? 25), 100)),
-        totalFailed: 0,
-        crmAdded: 0,
-        crmCallListAdded: 0,
-        crmDuplicates: 0,
-        crmResearched: 0,
-        crmResearchFailed: 0,
-        phoneOnlyFound: 0,
-        exhausted: false,
-        realEmails: 0,
-        scrapeSummary: {
-          withEmail: 0,
-          phoneOnly: 0,
-          crmAdded: 0,
-          callListAdded: 0,
-          researched: 0,
-          realEmails: 0,
-        },
-        chunksCompleted: 1,
-        message: "Agent discovery job queued. Keep npm run worker running.",
-      });
-      controller.close();
+
+      const liveLeads: ScrapedLead[] = [];
+      let found = 0;
+
+      try {
+        await scrapeWithoutAPI(
+          nicheClean,
+          locationClean,
+          cappedMax,
+          (lead: ScrapedLead) => {
+            // Stream each lead as it arrives
+            liveLeads.push(lead);
+            found++;
+            send("lead", { lead });
+            send("progress", {
+              totalFound: found,
+              totalFailed: 0,
+              remaining: Math.max(0, cappedMax - found),
+              currentChunk: 1,
+              totalChunks: 1,
+              percentComplete: Math.min(99, Math.round((found / cappedMax) * 100)),
+            });
+          },
+          aiProvider ?? null,
+          { round: 1 }
+        );
+
+        // Save all scraped leads to CRM
+        let crmAdded = 0;
+        let callListAdded = 0;
+        let crmDuplicates = 0;
+        let realEmails = 0;
+
+        if (liveLeads.length > 0) {
+          try {
+            const result = await insertScrapedLeadsToCrm(service, user.id, liveLeads, {
+              searchLocation: locationClean,
+              niche: nicheClean,
+              autoResearch: false,
+            });
+            crmAdded = result.added;
+            callListAdded = result.callListAdded;
+            crmDuplicates = result.duplicates;
+            realEmails = liveLeads.filter((l) => l.emailIsReal).length;
+          } catch (crmErr) {
+            console.error("[scrape-stream] CRM insert error:", crmErr);
+          }
+        }
+
+        const withEmail = liveLeads.filter((l) => !l.phoneOnly && l.email).length;
+        const phoneOnly = liveLeads.filter((l) => l.phoneOnly).length;
+
+        send("done", {
+          total: withEmail,
+          target: cappedMax,
+          totalFailed: 0,
+          crmAdded,
+          crmCallListAdded: callListAdded,
+          crmDuplicates,
+          phoneOnlyFound: phoneOnly,
+          realEmails,
+          exhausted: found < cappedMax,
+          scrapeSummary: {
+            withEmail,
+            phoneOnly,
+            crmAdded,
+            callListAdded,
+            researched: 0,
+            realEmails,
+          },
+          chunksCompleted: 1,
+        });
+      } catch (err) {
+        console.error("[scrape-stream] scrape error:", err);
+        send("error", {
+          message: err instanceof Error ? err.message : "Scraping failed",
+        });
+      }
+
+      try {
+        controller.close();
+      } catch {
+        /* already closed */
+      }
     },
   });
 
@@ -86,6 +150,7 @@ export async function POST(request: NextRequest) {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache, no-transform",
       Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
     },
   });
 }

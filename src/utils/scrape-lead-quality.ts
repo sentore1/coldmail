@@ -67,6 +67,33 @@ const JUNK_WEBSITE_DOMAINS = [
   ...JUNK_EMAIL_DOMAINS,
   "bing.com",
   "duckduckgo.com",
+  // Booking / menu / link-in-bio platforms — not the business's own site
+  "wa.me",
+  "api.whatsapp.com",
+  "setmore.com",
+  "menutigr.com",
+  "carrd.co",
+  "linktr.ee",
+  "linktree.com",
+  "beacons.ai",
+  "taplink.cc",
+  "bio.site",
+  "about.me",
+  "glowbe.at",
+  "readdy.link",
+  "readdy.ai",
+  "instamenu.co",
+  "menu.am",
+  "orderpizza.rw",
+  "glofood.rw",
+  "uber.com",
+  "ubereats.com",
+  "doordash.com",
+  "deliveroo.com",
+  "tripadvisor.com",
+  "booking.com",
+  "airbnb.com",
+  "expedia.com",
 ];
 
 const FREE_PERSONAL_EMAIL_DOMAINS = new Set([
@@ -466,7 +493,8 @@ export function isJunkScrapeLead(
     if (isJunkWebsite(lead.website)) return true;
     if (
       !emailMatchesWebsiteDomain(lead.email, lead.website) &&
-      !isFreePersonalEmail(lead.email)
+      !isFreePersonalEmail(lead.email) &&
+      !isJunkWebsite(lead.website)  // guessed email on a junk-website lead is still valid
     ) {
       return true;
     }

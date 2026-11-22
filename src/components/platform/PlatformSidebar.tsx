@@ -2,6 +2,7 @@
 
 import { ActiveModule } from "@/types/platform";
 import { Radio, Mail, Settings, Layout, Server, Send, Megaphone, Workflow, Puzzle } from "lucide-react";
+import Image from "next/image";
 
 interface SidebarProps {
   activeModule: ActiveModule;
@@ -56,12 +57,6 @@ function buildNavGroups(pipelineActionCount: number) {
           icon: Server,
           badge: null,
         },
-        {
-          id: "ai-settings" as ActiveModule,
-          label: "AI Settings",
-          icon: Settings,
-          badge: null,
-        },
       ],
     },
   ];
@@ -76,13 +71,16 @@ export default function PlatformSidebar({
   return (
     <aside className="w-[200px] flex-shrink-0 flex flex-col bg-white border-r border-gray-200 h-full">
       {/* Logo */}
-      <div className="flex items-end gap-2 px-4 py-5 border-b border-gray-200">
-        <span className="font-black text-2xl tracking-tight" style={{ color: "#2563EB" }}>
-          pryro
-        </span>
-        <span className="text-xs font-semibold text-gray-400 pb-0.5 tracking-widest uppercase">
-          mail
-        </span>
+      <div className="flex items-center gap-2 px-4 py-5">
+        <Image
+          src="/pryro-logo.png"
+          alt="Pryro Mail"
+          width={110}
+          height={32}
+          priority
+          className="h-8 w-auto"
+        />
+        <span className="text-sm font-semibold text-gray-700 leading-none">coldmail</span>
       </div>
 
       {/* Nav Groups */}
@@ -103,10 +101,11 @@ export default function PlatformSidebar({
                     className={`
                       flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-150 w-full text-left
                       ${isActive
-                        ? "text-white bg-blue-600 shadow-sm"
+                        ? "text-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                       }
                     `}
+                    style={isActive ? { backgroundColor: "#0084FF" } : undefined}
                   >
                     <Icon size={15} className="flex-shrink-0" />
                     <span className="text-[13px] font-medium">{item.label}</span>
@@ -123,12 +122,19 @@ export default function PlatformSidebar({
         ))}
       </nav>
 
-      {/* Bottom status */}
-      <div className="p-3 border-t border-gray-200">
-        <div className="flex items-center gap-2 px-2 py-1.5 rounded-lg bg-green-50">
-          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse flex-shrink-0" />
-          <span className="text-[10px] font-medium text-green-700">All systems live</span>
-        </div>
+      {/* Bottom section */}
+      <div className="p-3 border-t border-gray-200 flex flex-col gap-1.5">
+        {/* AI Settings */}
+        <button
+          onClick={() => onModuleChange("ai-settings")}
+          className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-150 w-full text-left ${
+            activeModule === "ai-settings" ? "text-white shadow-sm" : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          }`}
+          style={activeModule === "ai-settings" ? { backgroundColor: "#0084FF" } : undefined}
+        >
+          <Settings size={15} className="flex-shrink-0" />
+          <span className="text-[13px] font-medium">AI Settings</span>
+        </button>
       </div>
     </aside>
   );

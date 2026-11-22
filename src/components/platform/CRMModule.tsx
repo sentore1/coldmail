@@ -162,7 +162,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 size={20} className="animate-spin text-blue-600" />
+        <Loader2 size={20} className="animate-spin text-[#0084FF]" />
       </div>
     );
   }
@@ -206,7 +206,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
           onClick={() => setFilterStatus("all")}
           className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors border ${
             filterStatus === "all"
-              ? "bg-blue-600 text-white border-blue-600"
+              ? "bg-[#0084FF] text-white border-[#0084FF]"
               : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
           }`}
         >
@@ -220,7 +220,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
               onClick={() => setFilterStatus(col.value)}
               className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-colors border ${
                 filterStatus === col.value
-                  ? "bg-blue-600 text-white border-blue-600"
+                  ? "bg-[#0084FF] text-white border-[#0084FF]"
                   : "bg-white text-gray-600 border-gray-300 hover:border-gray-400"
               }`}
             >
@@ -236,7 +236,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="px-2.5 py-1 rounded-md text-[11px] border border-gray-300 bg-white text-gray-700 outline-none focus:border-blue-500"
+              className="px-2.5 py-1 rounded-md text-[11px] border border-gray-300 bg-white text-gray-700 outline-none focus:border-[#0084FF]"
             >
               <option value="all">All categories</option>
               {categories.map((cat) => (
@@ -311,9 +311,9 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
                     {/* Drop zone */}
                     <div
                       className={`flex flex-col gap-2 flex-1 rounded-lg p-2 transition-all overflow-y-auto ${
-                        isOver ? "bg-blue-50 border-2 border-dashed border-blue-300" : "bg-gray-100 border-2 border-dashed border-transparent"
+                        isOver ? "bg-[#e6f4ff] border-2 border-dashed border-[#66b8ff]" : "bg-gray-100 border-2 border-dashed border-transparent"
                       }`}
-                      style={{ minHeight: "8rem", maxHeight: "calc(100vh - 260px)" }}
+                      style={{ minHeight: "8rem", maxHeight: "calc(100vh - 260px)", backgroundImage: isOver ? undefined : "radial-gradient(circle, #d1d5db 1px, transparent 1px)", backgroundSize: "16px 16px" }}
                     >
                       {columnLeads.map((lead) => (
                         <LeadCard
@@ -328,8 +328,13 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
                         />
                       ))}
                       {columnLeads.length === 0 && (
-                        <div className="flex items-center justify-center h-20 rounded-md border border-dashed border-gray-300">
-                          <p className="text-[10px] text-gray-400">Drop here</p>
+                        <div className="flex flex-col items-center justify-center h-20 rounded-md border border-dashed border-gray-200 gap-2">
+                          <div className="flex gap-1.5">
+                            <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-gray-300" />
+                          </div>
+                          <p className="text-[10px] text-gray-300">Drop here</p>
                         </div>
                       )}
                     </div>
@@ -368,7 +373,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
                   {drawerLead.status}
                 </span>
                 {drawerLead.niche && (
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#e6f4ff] text-[#0070d6] border border-[#99ceff]">
                     {drawerLead.niche}
                   </span>
                 )}
@@ -394,8 +399,8 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
                       }}
                       className={`text-[10px] px-2.5 py-1 rounded border transition-all font-medium ${
                         normalizeStatus(drawerLead.status) === col.value
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"
+                          ? "bg-[#0084FF] text-white border-[#0084FF]"
+                          : "bg-white text-gray-600 border-gray-300 hover:border-[#0084FF]"
                       }`}
                     >
                       {col.label}
@@ -427,7 +432,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
                           <p className="text-xs font-medium text-gray-900 truncate">{se.subject || "(no subject)"}</p>
                           <span className={`text-[9px] px-1.5 py-0.5 rounded font-semibold flex-shrink-0 ${
                             se.status === "sent" || se.status === "opened" || se.status === "replied"
-                              ? "bg-blue-50 text-blue-700"
+                              ? "bg-[#e6f4ff] text-[#0070d6]"
                               : "bg-red-50 text-red-600"
                           }`}>
                             {se.status.toUpperCase()}
@@ -451,12 +456,12 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={4}
                   placeholder="Add notes about this lead..."
-                  className="w-full px-3 py-2 rounded-lg text-xs outline-none resize-none bg-white border border-gray-300 text-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  className="w-full px-3 py-2 rounded-lg text-xs outline-none resize-none bg-white border border-gray-300 text-gray-700 focus:border-[#0084FF] focus:ring-2 focus:ring-[#cce9ff] transition-all"
                 />
                 <button
                   onClick={saveNotes}
                   disabled={savingNotes}
-                  className="mt-1.5 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  className="mt-1.5 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0084FF] text-white hover:bg-[#0070d6] disabled:opacity-50 transition-colors"
                 >
                   {savingNotes ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
                   Save Notes
@@ -468,7 +473,7 @@ export default function CRMModule({ userId, onWriteEmail }: CRMModuleProps) {
             <div className="px-5 py-3 border-t border-gray-200 flex gap-2">
               <button
                 onClick={() => { onWriteEmail?.(drawerLead); setDrawerLead(null); }}
-                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold bg-[#0084FF] text-white hover:bg-[#0070d6] transition-colors"
               >
                 <Mail size={14} />
                 Write Email
@@ -524,7 +529,7 @@ function LeadCard({
       onDragStart={(e) => onDragStart(e, lead.id)}
       onDragEnd={onDragEnd}
       onClick={() => onOpen(lead)}
-      className="rounded-lg p-3 cursor-pointer border border-gray-200 bg-white hover:border-blue-400 hover:shadow-sm transition-all group"
+      className="rounded-lg p-3 cursor-pointer border border-gray-200 bg-white hover:border-[#0084FF] hover:shadow-sm transition-all group"
       style={{ opacity: isDragging ? 0.4 : 1 }}
     >
       <div className="flex items-start justify-between gap-1 mb-1">
@@ -535,7 +540,7 @@ function LeadCard({
           <span className="text-[9px] px-1.5 py-0.5 rounded bg-red-50 text-red-600 border border-red-200 font-semibold flex-shrink-0">FAIL</span>
         )}
         {isSent && !isFailed && (
-          <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-600 border border-blue-200 font-semibold flex-shrink-0">SENT</span>
+          <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#e6f4ff] text-[#0084FF] border border-[#99ceff] font-semibold flex-shrink-0">SENT</span>
         )}
       </div>
 
@@ -555,7 +560,7 @@ function LeadCard({
       <div className="flex items-center gap-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
           onClick={(e) => { e.stopPropagation(); onWriteEmail?.(lead); }}
-          className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-blue-600 text-white hover:bg-blue-700"
+          className="flex items-center gap-1 px-2 py-1 rounded text-[10px] font-medium bg-[#0084FF] text-white hover:bg-[#0070d6]"
         >
           <Mail size={9} />Email
         </button>

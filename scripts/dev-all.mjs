@@ -14,7 +14,10 @@ const processes = [
   {
     name: "worker",
     command: node,
-    args: [path.join(root, "scripts", "automation-worker.mjs")],
+    args: [
+      path.join(root, "node_modules", ".bin", "tsx"),
+      path.join(root, "scripts", "automation-worker.mjs"),
+    ],
   },
 ];
 

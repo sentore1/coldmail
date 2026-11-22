@@ -120,7 +120,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
                   key={s}
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold ${
                     step === s
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-[#0084FF] text-white'
                       : ['config', 'generating', 'preview', 'sending', 'complete'].indexOf(step) > i
                       ? 'bg-green-500 text-white'
                       : 'bg-gray-200 text-gray-500'
@@ -146,7 +146,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
                   value={yourCompany}
                   onChange={(e) => setYourCompany(e.target.value)}
                   placeholder="e.g., Acme Solutions"
-                  className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                  className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] focus:border-[#0084FF] placeholder:text-gray-400"
                 />
               </div>
 
@@ -159,7 +159,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
                   value={yourService}
                   onChange={(e) => setYourService(e.target.value)}
                   placeholder="e.g., AI-powered marketing automation"
-                  className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                  className="w-full px-4 py-3 text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] focus:border-[#0084FF] placeholder:text-gray-400"
                 />
               </div>
 
@@ -171,7 +171,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
                   <select
                     value={tone}
                     onChange={(e) => setTone(e.target.value as any)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] focus:border-[#0084FF]"
                   >
                     <option value="professional">Professional</option>
                     <option value="casual">Casual</option>
@@ -186,7 +186,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
                   <select
                     value={purpose}
                     onChange={(e) => setPurpose(e.target.value as any)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] focus:border-[#0084FF]"
                   >
                     <option value="introduction">Introduction</option>
                     <option value="partnership">Partnership</option>
@@ -198,7 +198,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
 
               <button
                 onClick={handleGenerateEmails}
-                className="w-full py-4 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-4 bg-[#0084FF] text-white rounded-lg font-semibold hover:bg-[#0070d6] transition-colors flex items-center justify-center gap-2"
               >
                 <Zap size={20} />
                 Generate {selectedLeads.length} Personalized Emails
@@ -209,7 +209,7 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
           {/* Step 2: Generating */}
           {step === 'generating' && (
             <div className="text-center py-12">
-              <Loader2 size={48} className="animate-spin text-blue-600 mx-auto mb-4" />
+              <Loader2 size={48} className="animate-spin text-[#0084FF] mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Generating Personalized Emails...
               </h3>
@@ -222,8 +222,8 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
           {/* Step 3: Preview */}
           {step === 'preview' && (
             <div className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-900">
+              <div className="bg-[#e6f4ff] border border-[#99ceff] rounded-lg p-4">
+                <p className="text-sm text-[#003d80]">
                   <strong>{generatedEmails.length} emails ready to send</strong>
                   <br />
                   Using 60 Gmail SMTP accounts with automatic rotation
@@ -325,16 +325,16 @@ export default function BulkEmailSender({ userId, selectedLeads, onComplete }: B
                   <p className="text-sm text-yellow-700">Queued</p>
                 </div>
 
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-                  <Mail size={24} className="text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-blue-900">{results.total}</p>
-                  <p className="text-sm text-blue-700">Total</p>
+                <div className="bg-[#e6f4ff] border border-[#99ceff] rounded-lg p-4 text-center">
+                  <Mail size={24} className="text-[#0084FF] mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-[#003d80]">{results.total}</p>
+                  <p className="text-sm text-[#0070d6]">Total</p>
                 </div>
               </div>
 
               <button
                 onClick={onComplete}
-                className="w-full py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                className="w-full py-3 bg-[#0084FF] text-white rounded-lg font-semibold hover:bg-[#0070d6] transition-colors"
               >
                 Done
               </button>

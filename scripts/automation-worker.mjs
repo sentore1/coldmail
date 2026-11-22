@@ -7,6 +7,7 @@ import nodemailer from "nodemailer";
 
 const root = process.cwd();
 loadEnv(path.join(root, ".env"));
+loadEnv(path.join(root, ".env.local"));
 
 const once = process.argv.includes("--once");
 const workerId = `${os.hostname()}-${process.pid}`;
@@ -530,22 +531,30 @@ async function triggerLocal(pathname, method = "GET", body = null) {
 
 async function handleJob(job) {
   if (job.job_type === "agent_discover") {
-    await triggerLocal("/api/automation/discover", "POST", {
-      userId: job.user_id,
+    // Run discovery directly — no HTTP call needed
+    const { runAgentDiscovery } = await import("../src/utils/lead-agent-discovery.ts");
+    const result = await runAgentDiscovery(supabase, job.user_id, {
       niche: job.payload?.niche,
       location: job.payload?.location,
       maxResults: job.payload?.maxResults,
       generateDrafts: job.payload?.generateDrafts ?? false,
     });
+    log(
+      "discover done",
+      `inserted:${result.inserted}`,
+      `dupes:${result.duplicates}`,
+      `research jobs:${result.researchJobs}`
+    );
   } else if (job.job_type === "send_approved_email") {
     await sendQueuedEmail(job.user_id, job.payload?.leadId ?? null);
   } else if (job.job_type === "research_lead") {
     const leadId = job.payload?.leadId;
     if (!leadId) throw new Error("research_lead requires payload.leadId");
-    await triggerLocal("/api/automation/research", "POST", {
-      leadId,
-      userId: job.user_id,
-    });
+    // Run research directly — no HTTP call needed
+    const { runLeadResearch } = await import("../src/utils/lead-research.ts");
+    const result = await runLeadResearch(supabase, job.user_id, leadId);
+    if (!result.success) throw new Error(result.error ?? "Research failed");
+    log("research done", leadId, result.stage ?? "");
   } else if (job.job_type === "score_lead") {
     await scoreLead(job);
   } else if (job.job_type === "process_followups") {
@@ -553,12 +562,7 @@ async function handleJob(job) {
   } else if (job.job_type === "check_inbox") {
     await triggerLocal("/api/inbox/check", "GET");
   } else if (job.job_type === "generate_draft") {
-    const leadId = job.payload?.leadId;
-    if (!leadId) throw new Error("generate_draft requires payload.leadId");
-    await triggerLocal("/api/automation/generate-draft", "POST", {
-      leadId,
-      userId: job.user_id,
-    });
+    await generateDraft(job);
   } else {
     throw new Error(`Unknown job type: ${job.job_type}`);
   }

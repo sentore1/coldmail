@@ -139,7 +139,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
           </button>
           <button
             onClick={() => setShowAddForm(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#0084FF] text-white hover:bg-[#0070d6] transition-colors"
           >
             <Plus size={12} />
             Add inbox
@@ -179,7 +179,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
               </div>
               <div className="flex items-center gap-2">
                 {config.auto_reply_enabled && (
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 border border-blue-200">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#e6f4ff] text-[#0084FF] border border-[#99ceff]">
                     Auto-reply on
                   </span>
                 )}
@@ -217,7 +217,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
                       onClick={() => setForm((f) => ({ ...f, imap_host: preset.host, imap_port: preset.port }))}
                       className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                         form.imap_host === preset.host
-                          ? "bg-blue-600 text-white border-blue-600"
+                          ? "bg-[#0084FF] text-white border-[#0084FF]"
                           : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                       }`}
                     >
@@ -235,7 +235,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
                   value={form.email_address}
                   onChange={(e) => setForm((f) => ({ ...f, email_address: e.target.value, imap_username: e.target.value }))}
                   placeholder="you@gmail.com"
-                  className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400"
+                  className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] focus:border-[#0084FF] placeholder:text-gray-400"
                 />
               </div>
 
@@ -248,7 +248,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
                     value={form.imap_host}
                     onChange={(e) => setForm((f) => ({ ...f, imap_host: e.target.value }))}
                     placeholder="imap.gmail.com"
-                    className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
+                    className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] placeholder:text-gray-400"
                   />
                 </div>
                 <div>
@@ -258,7 +258,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
                     required
                     value={form.imap_port}
                     onChange={(e) => setForm((f) => ({ ...f, imap_port: parseInt(e.target.value) }))}
-                    className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF]"
                   />
                 </div>
               </div>
@@ -274,7 +274,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
                     value={form.imap_password}
                     onChange={(e) => setForm((f) => ({ ...f, imap_password: e.target.value }))}
                     placeholder="Gmail: use App Password, not your regular password"
-                    className="w-full px-3 py-2 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 placeholder:text-gray-400"
+                    className="w-full px-3 py-2 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0084FF] placeholder:text-gray-400"
                   />
                   <button
                     type="button"
@@ -315,7 +315,7 @@ export default function InboxConfigPanel({ onRepliesFound }: InboxConfigPanelPro
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 py-2.5 bg-[#0084FF] text-white rounded-xl text-sm font-semibold hover:bg-[#0070d6] disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {saving ? <Loader2 size={14} className="animate-spin" /> : null}
                   Connect inbox
