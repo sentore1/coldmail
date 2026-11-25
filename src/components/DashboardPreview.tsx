@@ -29,10 +29,17 @@ const PIPELINE_COLS = [
     stageBg: "bg-slate-600", stageText: "text-white",
     cards: [
       { name: "Aspire Rwanda NGO",          tag: "NGO",         email: "aspirerwanda@gmail.com" },
-      { name: "Never Again Rwanda",          tag: "NGO",         email: "info@neveragainrwanda.org" },
+      { name: "Never Again Rwanda",         tag: "NGO",         email: "info@neveragainrwanda.org" },
       { name: "CARE International",         tag: "INGO",        email: "care@carerwanda.org" },
       { name: "ActionAid Rwanda",           tag: "NGO",         email: "info@actionaid.rw" },
       { name: "Imbuto Foundation",          tag: "Foundation",  email: "contact@imbuto.rw" },
+      { name: "Haguruka Rwanda",            tag: "NGO",         email: "haguruka@gmail.com" },
+      { name: "Women for Women Intl",       tag: "INGO",        email: "wfw@rwanda.org" },
+      { name: "Umurage Foundation",         tag: "Foundation",  email: "info@umurage.rw" },
+      { name: "Global Fund Rwanda",         tag: "UN Agency",   email: "gf@rwanda.org" },
+      { name: "Doctors Without Borders",    tag: "INGO",        email: "msf@rwanda.org" },
+      { name: "Plan International RW",      tag: "INGO",        email: "plan@planrwanda.org" },
+      { name: "Caritas Rwanda",             tag: "NGO",         email: "caritas@caritas.rw" },
     ],
   },
   {
@@ -42,6 +49,12 @@ const PIPELINE_COLS = [
       { name: "Rwanda Red Cross",           tag: "NGO",         email: "info@redcross.rw" },
       { name: "Handicap International",     tag: "INGO",        email: "hi@handicap.rw" },
       { name: "Save the Children",          tag: "INGO",        email: "rwanda@savechildren.org" },
+      { name: "Africa Recruit",             tag: "NGO",         email: "ar@africarecruit.rw" },
+      { name: "AVSI Rwanda",                tag: "INGO",        email: "avsi@avsi.rw" },
+      { name: "COPORWA",                    tag: "NGO",         email: "info@coporwa.rw" },
+      { name: "Trocaire Rwanda",            tag: "INGO",        email: "trocaire@trocaire.rw" },
+      { name: "Concern Worldwide",          tag: "INGO",        email: "concern@concern.rw" },
+      { name: "Tearfund Rwanda",            tag: "NGO",         email: "tf@tearfund.rw" },
     ],
   },
   {
@@ -51,6 +64,11 @@ const PIPELINE_COLS = [
       { name: "UNHCR Rwanda",               tag: "UN Agency",   email: "rwa@unhcr.org" },
       { name: "Rwanda NGO Forum",           tag: "NGO",         email: "info@rwandangoforum.rw" },
       { name: "Africa Humanitarian Aid",    tag: "NGO",         email: "aha@africa.rw" },
+      { name: "WFP Rwanda",                 tag: "UN Agency",   email: "wfp@wfp.rw" },
+      { name: "IRC Rwanda",                 tag: "INGO",        email: "irc@theirc.rw" },
+      { name: "NRC Rwanda",                 tag: "INGO",        email: "nrc@nrc.rw" },
+      { name: "Mercy Corps Rwanda",         tag: "INGO",        email: "mc@mercycorps.rw" },
+      { name: "ADRA Rwanda",                tag: "NGO",         email: "adra@adra.rw" },
     ],
   },
   {
@@ -59,6 +77,10 @@ const PIPELINE_COLS = [
     cards: [
       { name: "Oxfam Rwanda",               tag: "INGO",        email: "oxfam@rwanda.org" },
       { name: "World Vision Rwanda",        tag: "INGO",        email: "wv@worldvision.rw" },
+      { name: "UNICEF Rwanda",              tag: "UN Agency",   email: "unicef@unicef.rw" },
+      { name: "SNV Rwanda",                 tag: "INGO",        email: "snv@snv.rw" },
+      { name: "GIZ Rwanda",                 tag: "INGO",        email: "giz@giz.rw" },
+      { name: "Enabel Rwanda",              tag: "INGO",        email: "enabel@enabel.rw" },
     ],
   },
 ];
@@ -291,12 +313,12 @@ function PipelineView({ visible }: { visible: boolean }) {
       {/* Stats bar */}
       <div className="flex items-center gap-6 px-5 py-2.5 border-b border-gray-200 bg-white">
         {[
-          { label: "In pipeline", val: 14 },
-          { label: "Scraped", val: 5 },
-          { label: "Researched", val: 3 },
-          { label: "Drafted", val: 3 },
-          { label: "Sent", val: 2 },
-          { label: "Failed", val: 1 },
+          { label: "In pipeline", val: 35 },
+          { label: "Scraped",     val: 12 },
+          { label: "Researched",  val: 9  },
+          { label: "Drafted",     val: 8  },
+          { label: "Sent",        val: 6  },
+          { label: "Failed",      val: 1  },
         ].map(s => (
           <div key={s.label}>
             <p className="text-[8px] text-gray-400 leading-none">{s.label}</p>
@@ -321,7 +343,12 @@ function PipelineView({ visible }: { visible: boolean }) {
               <p className="text-[8px] text-gray-400 mt-0.5">{col.hint}</p>
             </div>
 
-            <div className="flex flex-col gap-1.5 flex-1 rounded-[3px] p-1.5 bg-gray-100 border-2 border-dashed border-transparent overflow-hidden">
+            <div className="flex flex-col gap-1.5 flex-1 rounded-[3px] p-1.5 bg-gray-100 border-2 border-dashed border-transparent overflow-hidden relative"
+              style={{
+                backgroundImage: "radial-gradient(circle, #cbd5e1 1px, transparent 1px)",
+                backgroundSize: "8px 8px",
+              }}
+            >
               {col.cards.map((card, i) => (
                 <div
                   key={i}
