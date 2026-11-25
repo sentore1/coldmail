@@ -228,8 +228,8 @@ function ScraperView({ visible }: { visible: boolean }) {
             <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">
               <span className="text-[10px] font-semibold text-gray-700">
                 {visibleRows} leads found so far…
-                <span className="ml-2 text-green-600 font-semibold">✓ {real} verified</span>
-                {guess > 0 && <span className="ml-1.5 text-amber-600 font-semibold">· {guess} guessed</span>}
+                <span className="ml-2 font-semibold px-1.5 py-0.5 rounded bg-green-600 text-white text-[8px]">✓ {real} verified</span>
+                {guess > 0 && <span className="ml-1.5 font-semibold px-1.5 py-0.5 rounded bg-amber-500 text-white text-[8px]">~ {guess} guessed</span>}
               </span>
               <div className="flex items-center gap-2">
                 <div className="px-2 py-1 border border-gray-200 rounded text-[9px] text-gray-600">Export CSV</div>
@@ -257,10 +257,10 @@ function ScraperView({ visible }: { visible: boolean }) {
                   <span className="text-[10px] font-medium text-gray-800 truncate pr-2">{row.name}</span>
                   <div className="flex items-center gap-1.5 pr-2">
                     <span className="text-[9px] text-[#0084FF] truncate">{row.email}</span>
-                    <span className={`text-[7px] font-bold px-1 py-0.5 rounded flex-shrink-0 ${
+                    <span className={`text-[7px] font-bold px-1 py-0.5 rounded flex-shrink-0 text-white ${
                       row.badge === "REAL"
-                        ? "bg-green-50 text-green-700 border border-green-200"
-                        : "bg-amber-50 text-amber-700 border border-amber-200"
+                        ? "bg-green-600"
+                        : "bg-amber-500"
                     }`}>
                       {row.badge === "REAL" ? "✓ REAL" : "~ GUESS"}
                     </span>
