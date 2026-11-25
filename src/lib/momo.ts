@@ -115,7 +115,7 @@ async function getAccessToken(config: MoMoConfig): Promise<string> {
   }
 
   const credentials = Buffer.from(`${config.apiUserId}:${config.apiKey}`).toString("base64");
-  const res = await fetch(`${config.baseUrl}/collection/v1_0/token/`, {
+  const res = await fetch(`${config.baseUrl}/collection/token/`, {
     method: "POST",
     headers: {
       Authorization: `Basic ${credentials}`,
