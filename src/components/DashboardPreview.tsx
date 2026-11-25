@@ -26,7 +26,7 @@ const LEADS = [
 const PIPELINE_COLS = [
   {
     label: "Scraped", hint: "Run research to enrich context",
-    stageBg: "bg-slate-100", stageText: "text-slate-700",
+    stageBg: "bg-slate-600", stageText: "text-white",
     cards: [
       { name: "Aspire Rwanda NGO",          tag: "NGO",         email: "aspirerwanda@gmail.com" },
       { name: "Never Again Rwanda",          tag: "NGO",         email: "info@neveragainrwanda.org" },
@@ -37,7 +37,7 @@ const PIPELINE_COLS = [
   },
   {
     label: "Researched", hint: "Generate a personalised email",
-    stageBg: "bg-blue-50", stageText: "text-blue-700",
+    stageBg: "bg-blue-600", stageText: "text-white",
     cards: [
       { name: "Rwanda Red Cross",           tag: "NGO",         email: "info@redcross.rw" },
       { name: "Handicap International",     tag: "INGO",        email: "hi@handicap.rw" },
@@ -46,7 +46,7 @@ const PIPELINE_COLS = [
   },
   {
     label: "Needs Review", hint: "Batch approve before sending",
-    stageBg: "bg-amber-50", stageText: "text-amber-800",
+    stageBg: "bg-amber-500", stageText: "text-white",
     cards: [
       { name: "UNHCR Rwanda",               tag: "UN Agency",   email: "rwa@unhcr.org" },
       { name: "Rwanda NGO Forum",           tag: "NGO",         email: "info@rwandangoforum.rw" },
@@ -55,7 +55,7 @@ const PIPELINE_COLS = [
   },
   {
     label: "Sent", hint: "Email delivered — awaiting reply",
-    stageBg: "bg-green-50", stageText: "text-green-700",
+    stageBg: "bg-green-600", stageText: "text-white",
     cards: [
       { name: "Oxfam Rwanda",               tag: "INGO",        email: "oxfam@rwanda.org" },
       { name: "World Vision Rwanda",        tag: "INGO",        email: "wv@worldvision.rw" },
@@ -316,7 +316,7 @@ function PipelineView({ visible }: { visible: boolean }) {
             <div className="mb-2 px-1">
               <div className="flex items-center justify-between">
                 <span className="text-[9px] font-bold uppercase tracking-wider text-gray-700">{col.label}</span>
-                <span className="text-[8px] px-1.5 py-0.5 rounded bg-gray-200 text-gray-600 font-medium">{col.cards.length}</span>
+                <span className="text-[8px] px-1.5 py-0.5 rounded bg-gray-800 text-white font-semibold">{col.cards.length}</span>
               </div>
               <p className="text-[8px] text-gray-400 mt-0.5">{col.hint}</p>
             </div>
@@ -333,7 +333,7 @@ function PipelineView({ visible }: { visible: boolean }) {
                 >
                   <div className="flex items-start justify-between gap-1 mb-0.5">
                     <p className="text-[9px] font-semibold text-gray-800 truncate leading-tight">{card.name}</p>
-                    <span className={`text-[7px] font-semibold px-1 py-0.5 rounded border flex-shrink-0 ${col.stageBg} ${col.stageText}`}>
+                    <span className={`text-[7px] font-semibold px-1.5 py-0.5 rounded flex-shrink-0 ${col.stageBg} ${col.stageText}`}>
                       {col.label}
                     </span>
                   </div>
@@ -460,10 +460,9 @@ function CampaignsView({ visible }: { visible: boolean }) {
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-semibold text-gray-800">{c.name}</span>
               <span
-                className="text-[8px] font-bold px-1.5 py-0.5 rounded"
+                className="text-[8px] font-bold px-1.5 py-0.5 rounded text-white"
                 style={{
-                  backgroundColor: c.status === "active" ? "#dcfce7" : "#fef3c7",
-                  color: c.status === "active" ? "#166534" : "#92400e",
+                  backgroundColor: c.status === "active" ? "#16a34a" : "#f59e0b",
                 }}
               >
                 {c.status}
