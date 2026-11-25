@@ -11,9 +11,10 @@ export default async function Signup(props: {
   searchParams: Promise<Message>;
 }) {
   const searchParams = await props.searchParams;
+
   if ("message" in searchParams) {
     return (
-      <div className="flex h-screen w-full flex-1 items-center justify-center p-4 sm:max-w-md bg-white">
+      <div className="flex h-screen w-full items-center justify-center p-4 bg-white">
         <FormMessage message={searchParams} />
       </div>
     );
@@ -21,95 +22,89 @@ export default async function Signup(props: {
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
-      <div className="w-full max-w-sm">
-        <div className="flex items-center justify-center mb-8">
+      <div className="w-full max-w-[340px]">
+
+        {/* Logo */}
+        <div className="flex justify-center mb-10">
           <Image
             src="/pryro-logo.png"
             alt="Pryro Mail"
-            width={130}
-            height={40}
+            width={90}
+            height={28}
             priority
-            className="h-10 w-auto"
+            className="h-7 w-auto"
           />
         </div>
 
-        <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <UrlProvider>
-            <form className="flex flex-col gap-5">
-              <div className="text-center">
-                <h1 className="text-xl font-bold mb-1 text-gray-900">
-                  Create your account
-                </h1>
-                <p className="text-sm text-gray-600">
-                  Already have an account?{" "}
-                  <Link href="/sign-in" className="text-blue-600 hover:underline">
-                    Sign in
-                  </Link>
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-3">
-                <div>
-                  <Label htmlFor="full_name" className="text-sm mb-1.5 block text-gray-700">
-                    Full Name
-                  </Label>
-                  <Input
-                    id="full_name"
-                    name="full_name"
-                    type="text"
-                    placeholder="John Doe"
-                    required
-                    className="w-full"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email" className="text-sm mb-1.5 block text-gray-700">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    required
-                    className="w-full"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="password" className="text-sm mb-1.5 block text-gray-700">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    name="password"
-                    placeholder="••••••••"
-                    minLength={6}
-                    required
-                    className="w-full"
-                  />
-                </div>
-              </div>
-
-              <SubmitButton
-                formAction={signUpAction}
-                pendingText="Creating account..."
-                className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors"
-              >
-                Get Started Free
-              </SubmitButton>
-
-              <FormMessage message={searchParams} />
-            </form>
-          </UrlProvider>
-        </div>
-
-        <p className="text-center mt-4 text-sm">
-          <Link href="/" className="text-gray-600 hover:text-gray-900">
-            ← Back to home
+        {/* Heading */}
+        <h1 className="text-lg font-semibold text-gray-900 mb-1">Create account</h1>
+        <p className="text-xs text-gray-400 mb-7">
+          Already have one?{" "}
+          <Link href="/sign-in" className="text-gray-700 hover:underline">
+            Sign in
           </Link>
+        </p>
+
+        {/* Form — no card, no shadow */}
+        <UrlProvider>
+          <form className="flex flex-col gap-4">
+            <div>
+              <Label htmlFor="full_name" className="text-xs text-gray-500 mb-1.5 block">
+                Full name
+              </Label>
+              <Input
+                id="full_name"
+                name="full_name"
+                type="text"
+                placeholder="John Doe"
+                required
+                className="w-full rounded-sm h-9 text-sm border-gray-200 focus:border-gray-400 focus:ring-0"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="email" className="text-xs text-gray-500 mb-1.5 block">
+                Email
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                required
+                className="w-full rounded-sm h-9 text-sm border-gray-200 focus:border-gray-400 focus:ring-0"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="password" className="text-xs text-gray-500 mb-1.5 block">
+                Password
+              </Label>
+              <Input
+                id="password"
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                minLength={6}
+                required
+                className="w-full rounded-sm h-9 text-sm border-gray-200 focus:border-gray-400 focus:ring-0"
+              />
+            </div>
+
+            <SubmitButton
+              formAction={signUpAction}
+              pendingText="Creating account…"
+              className="w-full h-9 rounded-sm bg-gray-900 text-white text-sm font-medium hover:bg-gray-700 transition-colors mt-1"
+            >
+              Get started
+            </SubmitButton>
+
+            <FormMessage message={searchParams} />
+          </form>
+        </UrlProvider>
+
+        <p className="text-center mt-8 text-[11px] text-gray-300">
+          <Link href="/" className="hover:text-gray-500">← Back</Link>
         </p>
       </div>
     </div>

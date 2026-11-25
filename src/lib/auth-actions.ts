@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "../../supabase/server";
+import { createServiceClient } from "../../supabase/service";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -67,13 +68,33 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
     return encodedRedirect("error", "/sign-in", error.message);
+  }
+
+  // Block disabled users. Admins are never disabled (enforced by the admin API).
+  if (data.user) {
+    const service = createServiceClient();
+    const { data: profile } = await service
+      .from("users")
+      .select("role, is_disabled")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    const isDisabled = profile?.is_disabled === true && profile?.role !== "admin";
+    if (isDisabled) {
+      await supabase.auth.signOut();
+      return encodedRedirect(
+        "error",
+        "/sign-in",
+        "Your account has been disabled. Please contact support."
+      );
+    }
   }
 
   return redirect("/dashboard");

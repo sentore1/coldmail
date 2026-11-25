@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ActiveModule } from "@/types/platform";
-import { Radio, Mail, Settings, Layout, LogOut, Server, Clock, Menu, Megaphone, Workflow, Puzzle, User } from "lucide-react";
+import { Radio, Mail, Settings, Layout, LogOut, Server, Clock, Menu, Megaphone, Workflow, Puzzle, User, Shield } from "lucide-react";
 import { NotificationsBell } from "./NotificationsPanel";
 
 interface TopBarProps {
   activeModule: ActiveModule;
   userEmail?: string;
   userId?: string;
+  role?: string;
   onLogout?: () => void;
   onMenuToggle?: () => void;
 }
@@ -25,10 +27,11 @@ const moduleInfo: Record<ActiveModule, { label: string; desc: string; icon: Reac
   campaigns:      { label: "Campaigns",         desc: "Create and manage email campaigns",                   icon: Megaphone },
 };
 
-export default function TopBar({ activeModule, userEmail, userId, onLogout, onMenuToggle }: TopBarProps) {
+export default function TopBar({ activeModule, userEmail, userId, role, onLogout, onMenuToggle }: TopBarProps) {
   const info = moduleInfo[activeModule] || moduleInfo.scraper;
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // Close on outside click
   useEffect(() => {
@@ -96,6 +99,17 @@ export default function TopBar({ activeModule, userEmail, userId, onLogout, onMe
                   <p className="text-[10px] text-gray-400">Logged in</p>
                 </div>
               </div>
+
+              {/* Admin link (admins only) */}
+              {role === "admin" && (
+                <button
+                  onClick={() => { setOpen(false); router.push("/admin"); }}
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100"
+                >
+                  <Shield size={14} />
+                  Admin Panel
+                </button>
+              )}
 
               {/* Sign out */}
               <button

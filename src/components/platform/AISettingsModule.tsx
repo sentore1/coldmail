@@ -577,6 +577,43 @@ export default function AISettingsModule({ userId }: AISettingsProps) {
           );
         })}
       </div>
+
+      {/* Empty-state callout — shown when no provider has a key yet */}
+      {!initialLoading && Object.keys(settings).length === 0 && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-5 py-4 flex items-start gap-3">
+          <Zap size={18} className="text-amber-500 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-amber-800">No AI provider connected yet</p>
+            <p className="text-xs text-amber-700 mt-1">
+              To generate emails, replies, and research leads you need to add at least one API key above.
+              Groq is free and the fastest way to get started —{" "}
+              <a
+                href="https://console.groq.com/keys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-amber-900"
+              >
+                get a free Groq key
+              </a>
+              .
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Warning — provider has a key but nothing is set as active */}
+      {!initialLoading && Object.keys(settings).length > 0 && !activeProvider && (
+        <div className="rounded-xl border border-blue-200 bg-blue-50 px-5 py-4 flex items-start gap-3">
+          <Zap size={18} className="text-blue-500 mt-0.5 shrink-0" />
+          <div>
+            <p className="text-sm font-semibold text-blue-800">No active model selected</p>
+            <p className="text-xs text-blue-700 mt-1">
+              You have a key saved but no model is marked as active. Test the connection, pick a model from
+              the dropdown, then click <strong>Set as Active</strong>.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

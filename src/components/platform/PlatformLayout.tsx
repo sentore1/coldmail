@@ -26,9 +26,10 @@ function LazyModule({ active, children }: { active: boolean; children: React.Rea
 interface PlatformLayoutProps {
   userId: string;
   userEmail?: string;
+  role?: string;
 }
 
-export default function PlatformLayout({ userId, userEmail }: PlatformLayoutProps) {
+export default function PlatformLayout({ userId, userEmail, role }: PlatformLayoutProps) {
   const [activeModule, setActiveModule] = useState<ActiveModule>("scraper");
   const [preloadedLead, setPreloadedLead] = useState<Lead | null>(null);
   const [crmRefreshKey, setCrmRefreshKey] = useState(0);
@@ -153,6 +154,7 @@ export default function PlatformLayout({ userId, userEmail }: PlatformLayoutProp
           activeModule={activeModule}
           userEmail={userEmail}
           userId={userId}
+          role={role}
           onLogout={handleLogout}
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
         />

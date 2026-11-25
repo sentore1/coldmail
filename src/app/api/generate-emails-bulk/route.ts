@@ -162,22 +162,20 @@ export async function POST(request: NextRequest) {
     body.yourService?.trim() || formatPryroOfferForPrompt(pryroProfile);
 
   const serviceSupabase = createServiceClient();
-  const intelAiProvider = await loadAIProviderForUser(supabase);
 
-  // Fetch AI provider
-  let { data: aiProvider } = await serviceSupabase
-    .from("ai_settings").select("provider, api_key, active_model")
-    .eq("user_id", user.id).eq("is_active", true).maybeSingle();
-
-  if (!aiProvider?.api_key) {
-    const { data: any } = await serviceSupabase
-      .from("ai_settings").select("provider, api_key, active_model")
-      .eq("user_id", user.id).limit(1).maybeSingle();
-    aiProvider = any;
-  }
+  // Single authoritative fetch — used for both lead intel and email generation.
+  // loadAIProviderForUser prefers is_active=true, falls back to is_connected=true,
+  // then to any row — so the user always gets their own key, never a shared one.
+  const aiProvider = await loadAIProviderForUser(serviceSupabase, user.id);
+  const intelAiProvider = aiProvider; // same provider for lead intel enrichment
 
   if (!aiProvider?.api_key) {
-    return new Response(JSON.stringify({ error: "No AI provider configured." }), { status: 400 });
+    return new Response(
+      JSON.stringify({
+        error: "No AI provider configured. Go to Settings → AI Settings and add your API key.",
+      }),
+      { status: 400 }
+    );
   }
 
   // Fetch sender name from SMTP account

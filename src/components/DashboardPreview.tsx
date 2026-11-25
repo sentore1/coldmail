@@ -144,7 +144,7 @@ function ScraperView({ visible }: { visible: boolean }) {
 
       <div className="flex flex-col gap-3 p-4 flex-1 overflow-hidden">
         {/* Lead Scraper header */}
-        <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-sm">
+        <div className="bg-white border border-gray-200 rounded-[3px] p-3 shadow-sm">
           <div className="flex items-center gap-2 mb-3">
             <Radio size={13} className="text-blue-700" />
             <span className="text-[11px] font-semibold text-gray-900">Lead Scraper</span>
@@ -156,11 +156,11 @@ function ScraperView({ visible }: { visible: boolean }) {
 
           {/* Inputs */}
           <div className="flex gap-2 mb-2">
-            <div className="flex-1 flex items-center gap-1.5 bg-white border border-gray-200 px-2.5 py-1.5 rounded-lg">
+            <div className="flex-1 flex items-center gap-1.5 bg-white border border-gray-200 px-2.5 py-1.5 rounded-[3px]">
               <Search size={9} className="text-gray-400 flex-shrink-0" />
               <span className="text-[10px] text-gray-800">NGO</span>
             </div>
-            <div className="flex-1 flex items-center gap-1.5 bg-white border border-gray-200 px-2.5 py-1.5 rounded-lg">
+            <div className="flex-1 flex items-center gap-1.5 bg-white border border-gray-200 px-2.5 py-1.5 rounded-[3px]">
               <MapPin size={9} className="text-gray-400 flex-shrink-0" />
               <span className="text-[10px] text-gray-800">kigali</span>
             </div>
@@ -168,17 +168,17 @@ function ScraperView({ visible }: { visible: boolean }) {
 
           {/* Action row */}
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 text-[10px] text-gray-500 border border-gray-200 px-2 py-1 rounded-lg">
+            <div className="flex items-center gap-1 text-[10px] text-gray-500 border border-gray-200 px-2 py-1 rounded-[3px]">
               <Plus size={9} /> Add search
             </div>
-            <div className="flex items-center gap-1 border border-gray-200 px-2 py-1 rounded-lg text-[10px] text-gray-600">
+            <div className="flex items-center gap-1 border border-gray-200 px-2 py-1 rounded-[3px] text-[10px] text-gray-600">
               100 leads <ChevronDown size={9} />
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0084FF] text-white text-[10px] font-semibold rounded-lg">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0084FF] text-white text-[10px] font-semibold rounded-[3px]">
               <span className="w-1.5 h-1.5 rounded-full bg-white/70 animate-ping inline-block" />
               Scraping…
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0084FF] text-white text-[10px] font-semibold rounded-lg">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#0084FF] text-white text-[10px] font-semibold rounded-[3px]">
               Scrape + AI Emails
             </div>
           </div>
@@ -194,7 +194,7 @@ function ScraperView({ visible }: { visible: boolean }) {
 
         {/* Progress card */}
         {visibleRows > 0 && (
-          <div className="bg-white border border-gray-200 rounded-xl p-3 shadow-sm">
+          <div className="bg-white border border-gray-200 rounded-[3px] p-3 shadow-sm">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-semibold text-gray-700">Scrape Progress</span>
               <span className="text-[9px] text-gray-400">{progress}% complete</span>
@@ -223,7 +223,7 @@ function ScraperView({ visible }: { visible: boolean }) {
 
         {/* Results table */}
         {visibleRows > 0 && (
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex-1 flex flex-col">
+          <div className="bg-white border border-gray-200 rounded-[3px] overflow-hidden shadow-sm flex-1 flex flex-col">
             {/* Table header bar */}
             <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100">
               <span className="text-[10px] font-semibold text-gray-700">
@@ -321,11 +321,11 @@ function PipelineView({ visible }: { visible: boolean }) {
               <p className="text-[8px] text-gray-400 mt-0.5">{col.hint}</p>
             </div>
 
-            <div className="flex flex-col gap-1.5 flex-1 rounded-lg p-1.5 bg-gray-100 border-2 border-dashed border-transparent overflow-hidden">
+            <div className="flex flex-col gap-1.5 flex-1 rounded-[3px] p-1.5 bg-gray-100 border-2 border-dashed border-transparent overflow-hidden">
               {col.cards.map((card, i) => (
                 <div
                   key={i}
-                  className="bg-white border border-gray-100 px-2.5 py-2 rounded-lg shadow-sm"
+                  className="bg-white border border-gray-100 px-2.5 py-2 rounded-[3px] shadow-sm"
                   style={{
                     transition: `opacity 0.25s ${ci * 90 + i * 60}ms`,
                     opacity: shown ? 1 : 0,
@@ -378,7 +378,7 @@ function EmailWriterView({ visible }: { visible: boolean }) {
         ].map((lead, i) => (
           <div
             key={i}
-            className={`px-2.5 py-1.5 flex flex-col gap-0.5 rounded-lg ${lead.active ? "bg-[#0084FF]" : "bg-white border border-gray-100"}`}
+            className={`px-2.5 py-1.5 flex flex-col gap-0.5 rounded-[3px] ${lead.active ? "bg-[#0084FF]" : "bg-white border border-gray-100"}`}
           >
             <p className={`text-[9px] font-semibold truncate ${lead.active ? "text-white" : "text-gray-800"}`}>{lead.name}</p>
             <p className={`text-[8px] truncate ${lead.active ? "text-blue-100" : "text-gray-400"}`}>{lead.sub}</p>
@@ -391,7 +391,7 @@ function EmailWriterView({ visible }: { visible: boolean }) {
       </div>
 
       {/* Right — email output */}
-      <div className="flex-1 bg-white border border-gray-100 p-3 flex flex-col overflow-hidden rounded-lg">
+      <div className="flex-1 bg-white border border-gray-100 p-3 flex flex-col overflow-hidden rounded-[3px]">
         {/* Tone pills */}
         <div className="flex gap-2 mb-3">
           {[
@@ -401,7 +401,7 @@ function EmailWriterView({ visible }: { visible: boolean }) {
           ].map(t => (
             <div
               key={t.label}
-              className={`px-2.5 py-1 text-[9px] font-semibold rounded-lg border-2 ${
+              className={`px-2.5 py-1 text-[9px] font-semibold rounded-[3px] border-2 ${
                 t.active ? "bg-[#0084FF] text-white border-transparent" : "bg-white text-gray-500 border-gray-200"
               }`}
             >
@@ -425,7 +425,7 @@ function EmailWriterView({ visible }: { visible: boolean }) {
         </pre>
         {chars >= full.length && (
           <div className="flex justify-end mt-2">
-            <div className="px-3 py-1.5 bg-[#0084FF] text-white text-[10px] font-semibold flex items-center gap-1 rounded-lg">
+            <div className="px-3 py-1.5 bg-[#0084FF] text-white text-[10px] font-semibold flex items-center gap-1 rounded-[3px]">
               <CheckCircle2 size={9} /> Send Email
             </div>
           </div>
@@ -448,14 +448,14 @@ function CampaignsView({ visible }: { visible: boolean }) {
     <div className="flex flex-col gap-3 p-4 flex-1 overflow-hidden">
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-semibold text-gray-700">Active campaigns</p>
-        <div className="px-3 py-1 bg-[#0084FF] text-white text-[9px] font-semibold rounded-lg">+ New Campaign</div>
+        <div className="px-3 py-1 bg-[#0084FF] text-white text-[9px] font-semibold rounded-[3px]">+ New Campaign</div>
       </div>
       <div className="flex flex-col gap-2 flex-1">
         {CAMPAIGNS.map((c, i) => (
           <div
             key={c.name}
             style={{ transition: `opacity 0.3s ${i * 80}ms, transform 0.3s ${i * 80}ms` }}
-            className={`bg-white border border-gray-100 px-4 py-2.5 rounded-lg ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
+            className={`bg-white border border-gray-100 px-4 py-2.5 rounded-[3px] ${shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}`}
           >
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-semibold text-gray-800">{c.name}</span>
@@ -549,7 +549,7 @@ export default function DashboardPreview() {
                       <div
                         key={label}
                         onClick={() => { if (id) switchTab(id as Tab); }}
-                        className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all ${
+                        className={`flex items-center gap-2.5 px-3 py-2 rounded-[3px] transition-all ${
                           isActive
                             ? "bg-[#0084FF] text-white shadow-sm cursor-pointer"
                             : id
@@ -572,7 +572,7 @@ export default function DashboardPreview() {
 
           {/* Bottom — AI Settings */}
           <div className="p-3 border-t border-gray-200">
-            <div className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600">
+            <div className="flex items-center gap-2.5 px-3 py-2 rounded-[3px] text-gray-600">
               <Settings size={15} className="flex-shrink-0" />
               <span className="text-[13px] font-medium">AI Settings</span>
             </div>
