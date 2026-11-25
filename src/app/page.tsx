@@ -106,7 +106,7 @@ export default async function Home() {
       <footer className="border-t border-gray-100 py-6 px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
         <span className="text-[140px] font-bold text-gray-200 tracking-tight leading-none select-none">Pryro ColdMail</span>
         <p className="text-[10px] text-gray-400 tracking-widest">
-          POWERED BY SUPABASE · GROQ · AI-NATIVE
+          POWERED BY PRYRO· APLIL · AI-NATIVE
         </p>
         <div className="flex gap-4 text-xs text-gray-400">
           <Link href="/sign-in" className="hover:text-gray-600">Sign in</Link>
